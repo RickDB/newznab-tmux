@@ -153,7 +153,7 @@
 										<a href="#" class="icon_cart text-muted"><i
 													class="fa fa-shopping-cart" title="Send to my Cart"></i></a>
 										{if isset($sabintegrated)}
-											<a href="#" class="icon_sab text-muted"><i class="fa fa-send-o"
+											<a href="#" class="icon_sab text-muted"><i class="fa fa-cloud-download"
 																					   title="Send to my Queue"></i></a>
 										{/if}
 										{if $weHasVortex}
