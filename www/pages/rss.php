@@ -4,7 +4,7 @@ use newznab\db\Settings;
 
 $category = new Category(['Settings' => $page->settings]);
 $releases = new Releases(['Settings' => $page->settings]);
-
+	
 // If no content id provided then show user the rss selection page.
 if (!isset($_GET["t"]) && !isset($_GET["rage"]) && !isset($_GET["anidb"])) {
 	// User has to either be logged in, or using rsskey.
@@ -16,7 +16,7 @@ if (!isset($_GET["t"]) && !isset($_GET["rage"]) && !isset($_GET["anidb"])) {
 			header("Location: " . $page->settings->getSetting('code'));
 		}
 	}
-
+	
 	$page->title = "Rss Feeds";
 	$page->meta_title = "Rss Nzb Feeds";
 	$page->meta_keywords = "view,nzb,description,details,rss,atom";
@@ -85,7 +85,8 @@ if (!isset($_GET["t"]) && !isset($_GET["rage"]) && !isset($_GET["anidb"])) {
 			'rsstoken' => $rssToken
 		]
 	);
-
+	
+	
 	if ($userCat == -3) {
 		$relData = $releases->getShowsRss($userNum, $uid, $page->users->getCategoryExclusion($uid), $userAirDate);
 	} elseif ($userCat == -4) {
@@ -94,6 +95,24 @@ if (!isset($_GET["t"]) && !isset($_GET["rage"]) && !isset($_GET["anidb"])) {
 		$relData = $releases->getRss(explode(',', $userCat), $userNum, $uid, $userRage, $userAnidb, $userAirDate);
 	}
 
+	$userfilter = -1;
+	if (isset($_GET["uFilter"]))
+		$userfilter = ($_GET["uFilter"]);
+
+	if($userfilter != -1)
+	{
+		$catexclusions = $page->users->getCategoryExclusion($uid);
+		$page->title = "Search results:".$userfilter;
+
+		$categoryId = array();
+		$categoryId[] = -1;
+		if (isset($_REQUEST['t'])) {
+			$categoryId = explode(',', $_REQUEST['t']);
+		}
+
+		$relData = $releases->getRssSearch($userfilter, $categoryId, 0, 250, 'postdate', -1, $catexclusions);
+	}
+	
 	$page->smarty->assign('releases', $relData);
 	header("Content-type: text/xml");
 	echo trim($page->smarty->fetch('rss.tpl'));

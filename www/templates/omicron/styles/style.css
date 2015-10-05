@@ -420,3 +420,4 @@ div.icon_nzbvortex_clicked		{ background-image: url('../images/icons/vortex/bigs
         .cboxMovie .cboxSlideshow_off #cboxSlideshow.hover{background-position:-75px -25px;}
 
 
+@media(min-width: 768px).navbar-nav>li>a{ padding-left: 2px;}

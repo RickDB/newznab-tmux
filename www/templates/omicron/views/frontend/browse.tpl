@@ -24,7 +24,7 @@
 										   title="View available TV series">Series List</a> |
 										<a title="Manage your shows" href="{$smarty.const.WWW_TOP}/myshows">Manage
 											My Shows</a> |
-										<a title="All releases in your shows as an RSS feed"
+										<a title="RSS feed of current category"
 										   href="{$smarty.const.WWW_TOP}/rss?t=-3&amp;dl=1&amp;i={$userdata.id}&amp;r={$userdata.rsstoken}">Rss
 											Feed</a>
 									</p>
@@ -37,7 +37,6 @@
 										<b>List</b>
 										<br/>
 									{/if}
-									With Selected:
 									<div class="btn-group">
 										<input type="button"
 											   class="nzb_multi_operations_download btn btn-sm btn-success"
@@ -66,9 +65,12 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4">
-								{$pager}
+							<div class="pull-right" align="right">
+								<a class=" btn btn-sm btn-warning" title="RSS feed of current category" href="{$smarty.const.WWW_TOP}/rss?t={$category}&amp;dl=1&amp;i={$userdata.id}&amp;r={$userdata.rsstoken}">Rss <i class="fa-icon-rss"></i></a>
 							</div>
+						</div>
+						<div class="col-md-6">
+							{$pager}
 						</div>
 						<hr>
 						<table class="data table table-condensed table-striped table-responsive table-hover" cellspacing="0"
@@ -92,10 +94,26 @@
 							</thead>
 							<tbody>
 							{foreach from=$results item=result}
-								<tr id="guid{$result.guid}">
-									<td class="check"><input id="chk{$result.guid|substr:0:7}"
-															 type="checkbox" class="nzb_check"
-															 value="{$result.guid}"/></td>
+							<tr id="guid{$result.guid}">
+									{if (strpos($category, '60') !== false)}
+											<td class="check" width="25%"><input id="chk{$result.guid|substr:0:7}"
+											 type="checkbox" class="nzb_check"
+											 value="{$result.guid}"/>
+											 
+											{if $result.jpgstatus == 1}
+												<img width="363" height="450" src="{$smarty.const.WWW_TOP}/covers/sample/{$result.guid}_thumb.jpg" />
+											{else}
+												{if $result.haspreview == 1}
+													<img width="400" height="250" src="{$smarty.const.WWW_TOP}/covers/preview/{$result.guid}_thumb.jpg" />
+												{/if}
+											{/if}
+											</td>
+										{else}
+										<td class="check"><input id="chk{$result.guid|substr:0:7}"
+										 type="checkbox" class="nzb_check"
+										 value="{$result.guid}"/></td>
+									{/if}
+
 									<td>
 										<a href="{$smarty.const.WWW_TOP}/details/{$result.guid}/{$result.searchname|escape:"htmlall"}"
 										   class="title">{$result.searchname|escape:"htmlall"|replace:".":" "}</a>{if $result.failed > 0} <i class="fa fa-exclamation-circle" style="color: red" title="This release has failed to download for some users"></i>{/if}
@@ -185,9 +203,9 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4">
-								{$pager}
-							</div>
+						</div>
+							<div class="col-md-6">
+							{$pager}
 						</div>
 					</div>
 				</div>
