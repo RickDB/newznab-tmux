@@ -24,7 +24,7 @@
 										   title="View available TV series">Series List</a> |
 										<a title="Manage your shows" href="{$smarty.const.WWW_TOP}/myshows">Manage
 											My Shows</a> |
-										<a title="RSS feed of current category"
+										<a title="All releases in your shows as an RSS feed"
 										   href="{$smarty.const.WWW_TOP}/rss?t=-3&amp;dl=1&amp;i={$userdata.id}&amp;r={$userdata.rsstoken}">Rss
 											Feed</a>
 									</p>
@@ -37,6 +37,7 @@
 										<b>List</b>
 										<br/>
 									{/if}
+									With Selected:
 									<div class="btn-group">
 										<input type="button"
 											   class="nzb_multi_operations_download btn btn-sm btn-success"
