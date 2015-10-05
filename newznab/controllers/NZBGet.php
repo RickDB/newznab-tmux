@@ -154,7 +154,7 @@ class NZBGet
 	public function sendURLToNZBGet($guid)
 	{
 		$reldata = $this->Releases->getByGuid($guid);
-
+        $url     = "{$this->serverurl}getnzb/{$guid}&amp;i={$this->uid}&amp;r={$this->rsstoken}";
 		$header =
 			'<?xml version="1.0"?>
 			<methodCall>
@@ -174,16 +174,7 @@ class NZBGet
 					</param>
 					<param>
 						<value>
-							<string>' .
-			$this->serverurl .
-			'getnzb/' .
-			$guid .
-			'%26i%3D' .
-			$this->uid .
-			'%26r%3D' .
-			$this->rsstoken
-			.
-			'</string>
+							<string>'.$url.'</string>
 						</value>
 					</param>
 				</params>

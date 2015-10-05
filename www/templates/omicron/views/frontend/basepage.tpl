@@ -60,8 +60,8 @@
 	  |               | sidebar-mini                            |
 	  |---------------------------------------------------------|
 	  -->
-	<body class="skin-blue sidebar-mini layout-boxed">
-	<div class="wrapper">
+	<body class="skin-blue sidebar-mini layout-boxed sidebar-collapse">
+	<div>
 		<!-- Main Header -->
 		<header class="main-header">
 			<!-- Logo -->
@@ -139,52 +139,17 @@
 			</nav>
 		</header>
 		<!-- Left side column. contains the logo and sidebar -->
-		<aside class="main-sidebar">
+		<aside class="main-sidebar offcanvas">
 			<!-- sidebar: style can be found in sidebar.less -->
 			<section class="sidebar">
-				<!-- Sidebar user panel -->
-				<div class="user-panel">
-					<div class="pull-left image">
-						<img src="{$smarty.const.WWW_TOP}/templates_shared/images/user-loggedin.png" class="img-circle"
-							 alt="User Image"/>
-					</div>
-					<div class="pull-left info">
-						<p>{$userdata.username}</p>
-						<a href="#"><i class="fa fa-circle text-success"></i><span>{$userdata.rolename}</span></a>
-					</div>
-				</div>
-				<!-- search form -->
-				<form id="headsearch_form" action="{$smarty.const.WWW_TOP}/search/" method="get">
-					<input id="headsearch" name="search" value="{if $header_menu_search == ""}Search...{else}{$header_menu_search|escape:"htmlall"}{/if}" class="form-control" type="text" tabindex="1$" />
-					<div class="row small-gutter-left" style="padding-top:3px;">
-						<div class="col-md-8">
-							<select id="headcat" name="t" class="form-control" data-search="true">
-								<option class="grouping" value="-1">All</option>
-								{foreach from=$parentcatlist item=parentcat}
-									<option {if $header_menu_cat==$parentcat.id}selected="selected"{/if} value="{$parentcat.id}"> [{$parentcat.title}]</option>
-									{foreach from=$parentcat.subcatlist item=subcat}
-										<option {if $header_menu_cat==$subcat.id}selected="selected"{/if} value="{$subcat.id}">&nbsp;&nbsp;&nbsp; > {$subcat.title}</option>
-									{/foreach}
-								{/foreach}
-							</select>
-						</div>
-						<div class="col-md-3 small-gutter-left">
-							<input id="headsearch_go" type="submit" class="btn btn-dark" style="margin-top:0px; margin-left:4px;" value="Go"/>
-						</div>
-					</div>
-				</form>
-				<!-- /.search form -->
-				<!-- Sidebar Menu -->
 				<ul class="sidebar-menu">
-					<li class="header">Main</li>
 					{if ($loggedin)=="true"}
 					<!-- Optionally, you can add icons to the links -->
-					<li><a href="{$site->home_link}"><i class="fa fa-home"></i><span> Home</span> <span
-									class="fa arrow"></span></a></li>
+					<br/>
 					<li class="treeview">
 						<a href="#"><i class="fa fa-list-ol"></i><span> Browse</span></a>
 						<ul class="treeview-menu">
-							<li><a href="{$serverroot}newposterwall"><i
+							<li><a href="{$serverroot}newposterwall?t=Movies"><i
 											class="fa fa-fire"></i><span> New Releases</span></a></li>
 							<li><a href="{$serverroot}console"><i
 											class="fa fa-gamepad"></i><span> Console</span></a></li>
@@ -208,9 +173,6 @@
 					<li class="treeview">
 						<a href="#"><i class="fa fa-list-ol"></i><span> Articles & Links</span></a>
 						<ul class="treeview-menu">
-							<li><a href="{$serverroot}contact-us"><i
-											class="fa fa-envelope-o"></i><span> Contact</span> <span
-											class="fa arrow"></span></a></li>
 							<li><a href="{$serverroot}search"><i class="fa fa-search"></i> Search</a></li>
 							<li><a href="{$serverroot}rss"><i class="fa fa-rss"></i> RSS Feeds</a></li>
 							<li><a href="{$serverroot}apihelp"><i class="fa fa-cloud"></i> API</a></li>
