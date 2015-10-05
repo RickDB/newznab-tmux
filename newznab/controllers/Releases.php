@@ -682,12 +682,6 @@ class Releases
 	
 	public function getRssSearch($search, $cat=array(-1), $offset=0, $limit=250, $orderby='posted_desc', $maxage=-1, $excludedcats=array(), $grp=array(), $minsize=-1, $maxsize=-1)
 	{	
-		$File = "/var/www/nn/resources/logs/debug_sphinx1.txt"; 
-		$Handle = fopen($File, 'w');
-		$Data = 'Getting data...'; 
-		fwrite($Handle, $Data); 
-		fclose($Handle); 	
-	
 		$sphinx = new Sphinx();
 	
 		//$results = $sphinx->search($search, $cat, $offset, $limit, $order, $maxage, $excludedcats, $grp, array(), true, $minsize, $maxsize);
