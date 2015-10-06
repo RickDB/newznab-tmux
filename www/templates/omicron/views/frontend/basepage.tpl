@@ -60,8 +60,8 @@
 	  |               | sidebar-mini                            |
 	  |---------------------------------------------------------|
 	  -->
-	<body class="skin-blue sidebar-mini layout-boxed">
-	<div class="wrapper">
+	<body class="skin-blue sidebar-mini layout-boxed sidebar-collapse">
+	<div>
 		<!-- Main Header -->
 		<header class="main-header">
 			<!-- Logo -->
@@ -139,52 +139,17 @@
 			</nav>
 		</header>
 		<!-- Left side column. contains the logo and sidebar -->
-		<aside class="main-sidebar">
+		<aside class="main-sidebar offcanvas">
 			<!-- sidebar: style can be found in sidebar.less -->
 			<section class="sidebar">
-				<!-- Sidebar user panel -->
-				<div class="user-panel">
-					<div class="pull-left image">
-						<img src="{$smarty.const.WWW_TOP}/templates_shared/images/user-loggedin.png" class="img-circle"
-							 alt="User Image"/>
-					</div>
-					<div class="pull-left info">
-						<p>{$userdata.username}</p>
-						<a href="#"><i class="fa fa-circle text-success"></i><span>{$userdata.rolename}</span></a>
-					</div>
-				</div>
-				<!-- search form -->
-				<form id="headsearch_form" action="{$smarty.const.WWW_TOP}/search/" method="get">
-					<input id="headsearch" name="search" value="{if $header_menu_search == ""}Search...{else}{$header_menu_search|escape:"htmlall"}{/if}" class="form-control" type="text" tabindex="1$" />
-					<div class="row small-gutter-left" style="padding-top:3px;">
-						<div class="col-md-8">
-							<select id="headcat" name="t" class="form-control" data-search="true">
-								<option class="grouping" value="-1">All</option>
-								{foreach from=$parentcatlist item=parentcat}
-									<option {if $header_menu_cat==$parentcat.id}selected="selected"{/if} value="{$parentcat.id}"> [{$parentcat.title}]</option>
-									{foreach from=$parentcat.subcatlist item=subcat}
-										<option {if $header_menu_cat==$subcat.id}selected="selected"{/if} value="{$subcat.id}">&nbsp;&nbsp;&nbsp; > {$subcat.title}</option>
-									{/foreach}
-								{/foreach}
-							</select>
-						</div>
-						<div class="col-md-3 small-gutter-left">
-							<input id="headsearch_go" type="submit" class="btn btn-dark" style="margin-top:0px; margin-left:4px;" value="Go"/>
-						</div>
-					</div>
-				</form>
-				<!-- /.search form -->
-				<!-- Sidebar Menu -->
 				<ul class="sidebar-menu">
-					<li class="header">Main</li>
 					{if ($loggedin)=="true"}
 					<!-- Optionally, you can add icons to the links -->
-					<li><a href="{$site->home_link}"><i class="fa fa-home"></i><span> Home</span> <span
-									class="fa arrow"></span></a></li>
+					<br/>
 					<li class="treeview">
 						<a href="#"><i class="fa fa-list-ol"></i><span> Browse</span></a>
 						<ul class="treeview-menu">
-							<li><a href="{$serverroot}newposterwall"><i
+							<li><a href="{$serverroot}newposterwall?t=Movies"><i
 											class="fa fa-fire"></i><span> New Releases</span></a></li>
 							<li><a href="{$serverroot}console"><i
 											class="fa fa-gamepad"></i><span> Console</span></a></li>
@@ -208,9 +173,6 @@
 					<li class="treeview">
 						<a href="#"><i class="fa fa-list-ol"></i><span> Articles & Links</span></a>
 						<ul class="treeview-menu">
-							<li><a href="{$serverroot}contact-us"><i
-											class="fa fa-envelope-o"></i><span> Contact</span> <span
-											class="fa arrow"></span></a></li>
 							<li><a href="{$serverroot}search"><i class="fa fa-search"></i> Search</a></li>
 							<li><a href="{$serverroot}rss"><i class="fa fa-rss"></i> RSS Feeds</a></li>
 							<li><a href="{$serverroot}apihelp"><i class="fa fa-cloud"></i> API</a></li>
@@ -248,74 +210,6 @@
 						href="https://github.com/DariusIII/">newznab-tmux</a>.</strong> This software is open source,
 			released under the GPLv2 license
 		</footer>
-		<!-- Control Sidebar -->
-		<aside class="control-sidebar control-sidebar-dark">
-			<!-- Create the tabs -->
-			<ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-				<li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a>
-				</li>
-				<li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-			</ul>
-			<!-- Tab panes -->
-			<div class="tab-content">
-				<!-- Home tab content -->
-				<div class="tab-pane active" id="control-sidebar-home-tab">
-					<h3 class="control-sidebar-heading">Recent Activity</h3>
-					<ul class='control-sidebar-menu'>
-						<li>
-							<a href='javascript::;'>
-								<i class="menu-icon fa fa-birthday-cake bg-red"></i>
-								<div class="menu-info">
-									<h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-									<p>Will be 23 on April 24th</p>
-								</div>
-							</a>
-						</li>
-					</ul>
-					<!-- /.control-sidebar-menu -->
-					<h3 class="control-sidebar-heading">Tasks Progress</h3>
-					<ul class='control-sidebar-menu'>
-						<li>
-							<a href='javascript::;'>
-								<h4 class="control-sidebar-subheading">
-									Custom Template Design
-									<span class="label label-danger pull-right">70%</span>
-								</h4>
-								<div class="progress progress-xxs">
-									<div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-								</div>
-							</a>
-						</li>
-					</ul>
-					<!-- /.control-sidebar-menu -->
-				</div>
-				<!-- /.tab-pane -->
-				<!-- Stats tab content -->
-				<div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-				<!-- /.tab-pane -->
-				<!-- Settings tab content -->
-				<div class="tab-pane" id="control-sidebar-settings-tab">
-					<form method="post">
-						<h3 class="control-sidebar-heading">General Settings</h3>
-						<div class="form-group">
-							<label class="control-sidebar-subheading">
-								Report panel usage
-								<input type="checkbox" class="pull-right" checked/>
-							</label>
-							<p>
-								Some information about this general settings option
-							</p>
-						</div>
-						<!-- /.form-group -->
-					</form>
-				</div>
-				<!-- /.tab-pane -->
-			</div>
-		</aside>
-		<!-- /.control-sidebar -->
-		<!-- Add the sidebar's background. This div must be placed
-			   immediately after the control sidebar -->
-		<div class='control-sidebar-bg'></div>
 	</div>
 	<!-- ./wrapper -->
 	<!-- REQUIRED JS SCRIPTS -->

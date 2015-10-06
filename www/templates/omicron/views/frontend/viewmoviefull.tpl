@@ -170,14 +170,23 @@
 											<td class="less mid"
 												title="{$mpostdate[$m@index]}">{$mpostdate[$m@index]|timeago}</td>
 											<td class="less right">{$msize[$m@index]|fsize_format:"MB"}</td>
-											<td class="icons">
-												<a title="Download NZB"
-												   href="{$smarty.const.WWW_TOP}/getnzb/{$mguid[$m@index]}/{$mname[$m@index]|escape:"htmlall"}"><i
-															class="icon icon_nzb fa fa-download text-muted"></i></a>
-												<a href="#" class="icon_cart text-muted"><i class="fa fa-shopping-cart"
-																							title="Add to Cart"></i></a>
-												{if isset($sabintegrated)}<img class="icon_sab"
-																			   src="{$smarty.const.WWW_TOP}/templates/baffi/images/icons/sabup.png"/>{/if}
+											<td class="icon_nzb"><a
+														href="{$smarty.const.WWW_TOP}/getnzb/{$result.guid}/{$result.searchname|escape:"htmlall"}"><i
+															class="fa fa-download text-muted"
+															title="Download NZB"></i></a>
+												<a href="{$smarty.const.WWW_TOP}/details/{$result.guid}/#comments"><i
+															class="fa fa-comments-o text-muted"
+															title="Comments"></i></a>
+												<a href="#" class="icon_cart text-muted"><i
+															class="fa fa-shopping-cart" title="Send to my Cart"></i></a>
+												{if isset($sabintegrated)}
+													<a href="#" class="icon_sab text-muted"><i class="fa fa-cloud-download"
+																							   title="Send to my Queue"></i></a>
+												{/if}
+												{if $weHasVortex}
+													<a href="#" class="icon_vortex text-muted"><i
+																class="fa fa-send-o" title="Send to NZBVortex"></i></a>
+												{/if}
 											</td>
 										</tr>
 									{/foreach}

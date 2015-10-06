@@ -66,9 +66,12 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4">
-								{$pager}
+							<div class="pull-right" align="right">
+								<a class=" btn btn-sm btn-warning" title="RSS feed of current category" href="{$smarty.const.WWW_TOP}/rss?t={$category}&amp;dl=1&amp;i={$userdata.id}&amp;r={$userdata.rsstoken}">Rss <i class="fa-icon-rss"></i></a>
 							</div>
+						</div>
+						<div class="col-md-6">
+							{$pager}
 						</div>
 						<hr>
 						<table class="data table table-condensed table-striped table-responsive table-hover" cellspacing="0"
@@ -92,10 +95,26 @@
 							</thead>
 							<tbody>
 							{foreach from=$results item=result}
-								<tr id="guid{$result.guid}">
-									<td class="check"><input id="chk{$result.guid|substr:0:7}"
-															 type="checkbox" class="nzb_check"
-															 value="{$result.guid}"/></td>
+							<tr id="guid{$result.guid}">
+									{if (strpos($category, '60') !== false)}
+											<td class="check" width="25%"><input id="chk{$result.guid|substr:0:7}"
+											 type="checkbox" class="nzb_check"
+											 value="{$result.guid}"/>
+											 
+											{if $result.jpgstatus == 1}
+												<img width="363" height="450" src="{$smarty.const.WWW_TOP}/covers/sample/{$result.guid}_thumb.jpg" />
+											{else}
+												{if $result.haspreview == 1}
+													<img width="400" height="250" src="{$smarty.const.WWW_TOP}/covers/preview/{$result.guid}_thumb.jpg" />
+												{/if}
+											{/if}
+											</td>
+										{else}
+										<td class="check"><input id="chk{$result.guid|substr:0:7}"
+										 type="checkbox" class="nzb_check"
+										 value="{$result.guid}"/></td>
+									{/if}
+
 									<td>
 										<a href="{$smarty.const.WWW_TOP}/details/{$result.guid}/{$result.searchname|escape:"htmlall"}"
 										   class="title">{$result.searchname|escape:"htmlall"|replace:".":" "}</a>{if $result.failed > 0} <i class="fa fa-exclamation-circle" style="color: red" title="This release has failed to download for some users"></i>{/if}
@@ -134,7 +153,7 @@
 										<a href="#" class="icon_cart text-muted"><i
 													class="fa fa-shopping-cart" title="Send to my Cart"></i></a>
 										{if isset($sabintegrated)}
-											<a href="#" class="icon_sab text-muted"><i class="fa fa-send-o"
+											<a href="#" class="icon_sab text-muted"><i class="fa fa-cloud-download"
 																					   title="Send to my Queue"></i></a>
 										{/if}
 										{if $weHasVortex}
@@ -185,9 +204,9 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-4">
-								{$pager}
-							</div>
+						</div>
+							<div class="col-md-6">
+							{$pager}
 						</div>
 					</div>
 				</div>

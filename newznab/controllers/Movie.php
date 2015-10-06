@@ -324,7 +324,7 @@ class Movie
 			AND r.passwordstatus %s AND %s %s %s %s
 			GROUP BY m.imdbid ORDER BY %s %s %s",
 			$this->showPasswords,
-			$this->getBrowseBy(),
+			str_replace(' AND', '', $this->getBrowseBy()),
 			$catsrch,
 			($maxAge > 0
 				? 'AND r.postdate > NOW() - INTERVAL ' . $maxAge . 'DAY '
@@ -335,6 +335,7 @@ class Movie
 			$order[1],
 			($start === false ? '' : ' LIMIT ' . $num . ' OFFSET ' . $start)
 		);
+		
 		return $this->pdo->query($sql, true, NN_CACHE_EXPIRY_MEDIUM);
 	}
 
