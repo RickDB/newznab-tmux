@@ -110,7 +110,7 @@ if (!isset($_GET["t"]) && !isset($_GET["rage"]) && !isset($_GET["anidb"])) {
 			$categoryId = explode(',', $_REQUEST['t']);
 		}
 
-		$relData = $releases->getRssSearch($userfilter, $categoryId, 0, 250, 'postdate', -1, $catexclusions);
+		$relData = $releases->search($userfilter, -1, -1, -1, -1, -1, -1, 0, 0, -1, -1, 0, 250, 'posted_desc', -1, $catexclusions, "basic", $categoryId);
 	}
 	
 	$page->smarty->assign('releases', $relData);

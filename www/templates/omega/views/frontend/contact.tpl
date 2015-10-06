@@ -11,23 +11,23 @@
 	<title>{$page->meta_title}{if $page->meta_title != "" && $site->metatitle != ""} - {/if}{$site->metatitle}</title>
 	<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 	<!-- Bootstrap 3.3.4 -->
-	<link href="{$smarty.const.WWW_TOP}/templates/omicron/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+	<link href="{$smarty.const.WWW_TOP}/templates/omega/bootstrap/css/bootstrap.min.css" rel="stylesheet"
 		  type="text/css"/>
 	<!-- Font Awesome Icons -->
-	<link href="{$smarty.const.WWW_TOP}/templates/omicron/bootstrap/css/font-awesome.min.css" rel="stylesheet"
+	<link href="{$smarty.const.WWW_TOP}/templates/omega/bootstrap/css/font-awesome.min.css" rel="stylesheet"
 		  type="text/css"/>
 	<!-- Ionicons -->
 	<link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css"/>
 	<!-- Theme style -->
-	<link href="{$smarty.const.WWW_TOP}/templates/omicron/dist/css/AdminLTE.css" rel="stylesheet" type="text/css"/>
+	<link href="{$smarty.const.WWW_TOP}/templates/omega/dist/css/AdminLTE.css" rel="stylesheet" type="text/css"/>
 	<!-- AdminLTE Skins. We have chosen the skin-blue for this starter
 		  page. However, you can choose any other skin. Make sure you
 		  apply the skin class to the body tag so the changes take effect.
 	-->
-	<link href="{$smarty.const.WWW_TOP}/templates/omicron/dist/css/skins/skin-blue.min.css" rel="stylesheet"
+	<link href="{$smarty.const.WWW_TOP}/templates/omega/dist/css/skins/skin-blue.min.css" rel="stylesheet"
 		  type="text/css"/>
 	<!-- Newznab utils.js -->
-	<script type="text/javascript" src="{$smarty.const.WWW_TOP}/templates/omicron/scripts/utils.js"></script>
+	<script type="text/javascript" src="{$smarty.const.WWW_TOP}/templates/omega/scripts/utils.js"></script>
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -105,34 +105,34 @@
 </body>
 <!-- REQUIRED JS SCRIPTS -->
 <!-- jQuery 2.1.4 -->
-<script src="{$smarty.const.WWW_TOP}/templates/omicron/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="{$smarty.const.WWW_TOP}/templates/omega/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <!-- Bootstrap 3.3.2 JS -->
-<script src="{$smarty.const.WWW_TOP}/templates/omicron/bootstrap/js/bootstrap.min.js"
+<script src="{$smarty.const.WWW_TOP}/templates/omega/bootstrap/js/bootstrap.min.js"
 		type="text/javascript"></script>
 <!-- Bootstrap hover on mouseover script -->
 <script type="text/javascript"
-		src="{$smarty.const.WWW_TOP}/templates/omicron/plugins/hover/bootstrap-hover-dropdown.min.js"></script>
+		src="{$smarty.const.WWW_TOP}/templates/omega/plugins/hover/bootstrap-hover-dropdown.min.js"></script>
 <!-- AdminLTE App -->
-<script src="{$smarty.const.WWW_TOP}/templates/omicron/dist/js/app.min.js" type="text/javascript"></script>
+<script src="{$smarty.const.WWW_TOP}/templates/omega/dist/js/app.min.js" type="text/javascript"></script>
 <!-- jQuery migrate script -->
 <script type="text/javascript"
-		src="{$smarty.const.WWW_TOP}/templates/omicron/plugins/migrate/jquery-migrate-1.2.1.min.js"></script>
+		src="{$smarty.const.WWW_TOP}/templates/omega/plugins/migrate/jquery-migrate-1.2.1.min.js"></script>
 <!-- SlimScroll script -->
-<script src="{$smarty.const.WWW_TOP}/templates/omicron/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="{$smarty.const.WWW_TOP}/templates/omega/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- Fastclick script -->
-<script src="{$smarty.const.WWW_TOP}/templates/omicron/plugins/fastclick/fastclick.min.js"></script>
+<script src="{$smarty.const.WWW_TOP}/templates/omega/plugins/fastclick/fastclick.min.js"></script>
 <!-- Notification script -->
-<script src="{$smarty.const.WWW_TOP}/templates/omicron/plugins/noty/packaged/jquery.noty.packaged.min.js"></script>
+<script src="{$smarty.const.WWW_TOP}/templates/omega/plugins/noty/packaged/jquery.noty.packaged.min.js"></script>
 <!-- Custom functions -->
-<script src="{$smarty.const.WWW_TOP}/templates/omicron/dist/js/functions.js" type="text/javascript"></script>
+<script src="{$smarty.const.WWW_TOP}/templates/omega/dist/js/functions.js" type="text/javascript"></script>
 <!-- data table plugin -->
 <script type="text/javascript"
-		src='{$smarty.const.WWW_TOP}/templates/omicron/dist/js/jquery.dataTables.min.js'></script>
+		src='{$smarty.const.WWW_TOP}/templates/omega/dist/js/jquery.dataTables.min.js'></script>
 <!-- newznab default scripts, needed for stuff to work -->
-<script type="text/javascript" src="{$smarty.const.WWW_TOP}/templates/omicron/scripts/jquery.colorbox-min.js"></script>
-<script type="text/javascript" src="{$smarty.const.WWW_TOP}/templates/omicron/scripts/jquery.autosize-min.js"></script>
-<script type="text/javascript" src="{$smarty.const.WWW_TOP}/templates/omicron/scripts/jquery.qtip2.js"></script>
-<script type="text/javascript" src="{$smarty.const.WWW_TOP}/templates/omicron/scripts/sorttable.js"></script>
+<script type="text/javascript" src="{$smarty.const.WWW_TOP}/templates/omega/scripts/jquery.colorbox-min.js"></script>
+<script type="text/javascript" src="{$smarty.const.WWW_TOP}/templates/omega/scripts/jquery.autosize-min.js"></script>
+<script type="text/javascript" src="{$smarty.const.WWW_TOP}/templates/omega/scripts/jquery.qtip2.js"></script>
+<script type="text/javascript" src="{$smarty.const.WWW_TOP}/templates/omega/scripts/sorttable.js"></script>
 <!-- Newznab utils.js -->
-<script type="text/javascript" src="{$smarty.const.WWW_TOP}/templates/omicron/scripts/utils.js"></script>
+<script type="text/javascript" src="{$smarty.const.WWW_TOP}/templates/omega/scripts/utils.js"></script>
 </html>
