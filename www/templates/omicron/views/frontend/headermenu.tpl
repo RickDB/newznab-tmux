@@ -48,6 +48,31 @@
 							{/if}
 						</ul>
 					</li>
+				{elseif $parentcat.id == 1000}
+					<li class="nav-parent">
+						<a href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"
+						   data-delay="30">
+							<i class="fa fa-gamepad"></i> {$parentcat.title}<i class="fa fa-angle-down"></i>
+						</a>
+						<ul class="dropdown-menu">
+							{if $userdata.consoleview == "1"}
+								<li><a href="{$smarty.const.WWW_TOP}/console">{$parentcat.title}</a></li>
+							{elseif $userdata.consoleview != "1"}
+								<li><a href="{$smarty.const.WWW_TOP}/browse?t=1000">{$parentcat.title}</a></li>
+							{/if}
+							<hr>
+							{if $userdata.consoleview == "1"}
+								{foreach from=$parentcat.subcatlist item=subcat}
+									<li><a href="{$smarty.const.WWW_TOP}/console?t={$subcat.id}">{$subcat.title}</a>
+									</li>
+								{/foreach}
+							{elseif $userdata.consoleview != "1"}
+								{foreach from=$parentcat.subcatlist item=subcat}
+									<li><a href="{$smarty.const.WWW_TOP}/browse?t={$subcat.id}">{$subcat.title}</a></li>
+								{/foreach}
+							{/if}
+						</ul>
+					</li>
 				{elseif $parentcat.id == 4000}
 					<li class="nav-parent">
 						<a href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"
@@ -167,23 +192,5 @@
 			</li>
 			<!-- End If logged in -->
 		{/if}
-		<!-- search form -->
-		<form class="navbar-form navbar-left" role="search" id="headsearch_form" action="{$smarty.const.WWW_TOP}/search/" method="get">
-		<div class="form-group">
-			<select id="headcat" name="t" class="input-sm" data-search="true">
-				<option class="grouping" value="-1">All</option>
-				{foreach from=$parentcatlist item=parentcat}
-					<option {if $header_menu_cat==$parentcat.id}selected="selected"{/if} value="{$parentcat.id}">{$parentcat.title}</option>
-					{foreach from=$parentcat.subcatlist item=subcat}
-						<option {if $header_menu_cat==$subcat.id}selected="selected"{/if} value="{$subcat.id}">&nbsp;&nbsp;&nbsp; > {$subcat.title}</option>
-					{/foreach}
-				{/foreach}
-			</select>
-			<input id="headsearch" name="search" value="{if $header_menu_search == ""}Search...{else}{$header_menu_search|escape:"htmlall"}{/if}" class="form-control input-sm" type="text" tabindex="1$" />
-			<input id="headsearch_go" type="submit" class="btn btn-sm btn-dark" style="margin-top:0px; margin-left:4px;" value="Go"/>
-		</div>
-		</form>
-		
-		<!-- /.search form -->
 	</div>
 </div>

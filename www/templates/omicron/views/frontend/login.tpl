@@ -63,6 +63,8 @@
             </div><!-- /.col -->
           </div>
         </form>
+		  <a href="{$smarty.const.WWW_TOP}forgottenpassword" class="text-center">I forgot my password</a><br>
+        <a href="{$smarty.const.WWW_TOP}register" class="text-center">Register a new membership</a>
     <!-- jQuery 2.1.4 -->
     <script src="{$smarty.const.WWW_TOP}/templates/omicron/plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- Bootstrap 3.3.2 JS -->

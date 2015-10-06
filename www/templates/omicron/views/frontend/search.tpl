@@ -178,9 +178,6 @@
 								   class="nzb_multi_operations_delete btn btn-sm btn-danger"
 								   value="Delete"/>
 						{/if}
-						<div class="pull-right" align="right">
-							<a class=" btn btn-sm btn-warning" title="RSS feed of current search" href="{$smarty.const.WWW_TOP}/rss?t={$category[0]}&amp;dl=1&amp;i={$userdata.id}&amp;r={$userdata.rsstoken}&amp;uFilter={$search|escape:'html'}">Rss <i class="fa-icon-rss"></i></a>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -193,24 +190,10 @@
 			{foreach from=$results item=result}
 				<tr class="{cycle values=",alt"}{if $lastvisit|strtotime<$result.adddate|strtotime} new{/if}"
 					id="guid{$result.guid}">
-					{if (strpos($category[0], '60') !== false)}
-							<td class="check" width="25%"><input id="chk{$result.guid|substr:0:7}"
-							 type="checkbox" class="nzb_check"
-							 value="{$result.guid}"/>
-							 
-							{if $result.jpgstatus == 1}
-								<img width="363" height="450" src="{$smarty.const.WWW_TOP}/covers/sample/{$result.guid}_thumb.jpg" />
-							{else}
-								{if $result.haspreview == 1}
-									<img width="400" height="250" src="{$smarty.const.WWW_TOP}/covers/preview/{$result.guid}_thumb.jpg" />
-								{/if}
-							{/if}
-							</td>
-						{else}
-						<td class="check"><input id="chk{$result.guid|substr:0:7}"
-						 type="checkbox" class="nzb_check"
-						 value="{$result.guid}"/></td>
-					{/if}
+					<td class="check">
+						<input id="chk{$result.guid|substr:0:7}" type="checkbox" class="nzb_check"
+							   value="{$result.guid}">
+					</td>
 					<td class="item">
 						<label for="chk{$result.guid|substr:0:7}">
 							<a class="title" title="View details"
@@ -369,9 +352,9 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-6">
-			{$pager}
+			<div class="col-md-4">
+				{$pager}
+			</div>
 		</div>
 		<br><br><br>
 	</form>
