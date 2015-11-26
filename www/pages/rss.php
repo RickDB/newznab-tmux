@@ -1,10 +1,12 @@
 <?php
 
 use newznab\Category;
+use newznab\Releases;
 use newznab\RSS;
 use newznab\db\Settings;
 
 $category = new Category(['Settings' => $page->settings]);
+$releases = new Releases(['Settings' => $page->settings]);
 $rss = new RSS(['Settings' => $page->settings]);
 
 // If no content id provided then show user the rss selection page.
@@ -103,12 +105,33 @@ if (!isset($_GET["t"]) && !isset($_GET["show"]) && !isset($_GET["anidb"])) {
 		]
 	);
 
+	// Check if user sends RSS search parameter
+	$userfilter = -1;
+	if (isset($_GET["uFilter"]))
+		$userfilter = ($_GET["uFilter"]);
+	
 	if ($userCat == -3) {
 		$relData = $rss->getShowsRss($userNum, $uid, $page->users->getCategoryExclusion($uid), $userAirDate);
 	} elseif ($userCat == -4) {
 		$relData = $rss->getMyMoviesRss($userNum, $uid, $page->users->getCategoryExclusion($uid));
-	} else {
+	} elseif ($userCat != -1 && $userfilter == -1) {
 		$relData = $rss->getRss(explode(',', $userCat), $userNum, $userShow, $userAnidb, $uid, $userAirDate);
+	}
+
+	// RSS search subscriptions
+	if($userfilter != -1)
+	{
+		$catexclusions = $page->users->getCategoryExclusion($uid);
+		$page->title = "Search results: ".$userfilter;
+
+		$categoryId = array();
+		$categoryId[] = -1;
+		if (isset($_REQUEST['t'])) {
+			$categoryId = explode(',', $_REQUEST['t']);
+		}
+	
+		// Min filesize 250MB (fromSize=2)
+		$relData = $releases->search($userfilter, -1, -1, -1, -1, 2, -1, 0, 0, -1, -1, 0, 250, 'posted_desc', -1, $catexclusions, "basic", $categoryId);
 	}
 
 	$page->smarty->assign('releases', $relData);
