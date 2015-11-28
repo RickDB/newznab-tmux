@@ -301,7 +301,8 @@ class Movie
 			}
 		}
 
-		$catsrchCheck = '';	
+		$catsrchCheck = '';
+		
 		if(!empty($catsrch))
 		{
 			$catsrchCheck = 'AND ' . $catsrch;
@@ -323,13 +324,17 @@ class Movie
 				GROUP_CONCAT(r.comments ORDER BY r.postdate DESC SEPARATOR ',') AS grp_release_comments,
 				GROUP_CONCAT(r.grabs ORDER BY r.postdate DESC SEPARATOR ',') AS grp_release_grabs,
 				GROUP_CONCAT(df.failed ORDER BY r.postdate DESC SEPARATOR ',') AS grp_release_failed,
+				GROUP_CONCAT(cp.id ORDER BY r.postdate DESC SEPARATOR ',') AS grp_release_catid,
+				GROUP_CONCAT(cp.title, ' > ', c.title ORDER BY r.postdate DESC SEPARATOR ',') AS grp_release_catname,
 			m.*,
 			g.name AS group_name,
 			rn.id AS nfoid
 			FROM releases r
 			LEFT OUTER JOIN groups g ON g.id = r.groupid
 			LEFT OUTER JOIN releasenfo rn ON rn.releaseid = r.id
-			LEFT OUTER JOIN dnzb_failures df ON df.release_id = r.id
+			LEFT OUTER JOIN dnzb_failures df ON df.id = r.id
+			LEFT OUTER JOIN category c ON c.id = r.categoryid
+			LEFT OUTER JOIN category cp ON cp.id = c.parentid
 			INNER JOIN movieinfo m ON m.imdbid = r.imdbid
 			WHERE m.imdbid IN (%s)
 			AND r.id IN (%s) %s
@@ -341,10 +346,10 @@ class Movie
 				$order[0],
 				$order[1]
 		);
+
 		$return = $this->pdo->query($sql, true, NN_CACHE_EXPIRY_MEDIUM);
-		if (!empty($return)) {
-			$return[0]['_totalcount'] = (isset($movies['total']) ? $movies['total'] : 0);
-		}
+		$return[0]['_totalcount'] = (isset($movies['total']) ? $movies['total'] : 0);
+
 		return $return;
 	}
 
@@ -1618,5 +1623,4 @@ class Movie
 				'Western'
 		];
 	}
-
 }

@@ -133,6 +133,9 @@ if (!isset($_GET["t"]) && !isset($_GET["show"]) && !isset($_GET["anidb"])) {
 		// Min filesize 250MB (fromSize=2)
 		$relData = $releases->search($userfilter, -1, -1, -1, -1, 2, -1, 0, 0, -1, -1, 0, 250, 'posted_desc', -1, $catexclusions, "basic", $categoryId);
 	}
+	
+	// Optionally set rss title parameter for templates that support it
+	$page->smarty->assign('rsstitle', $page->title);
 
 	$page->smarty->assign('releases', $relData);
 	$response = trim($page->smarty->fetch('rss.tpl'));
