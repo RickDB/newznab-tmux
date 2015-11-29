@@ -115,6 +115,8 @@ if (!isset($_GET["t"]) && !isset($_GET["show"]) && !isset($_GET["anidb"])) {
 		$relData = $rss->getMyMoviesRss($userNum, $uid, $page->users->getCategoryExclusion($uid));
 	} elseif ($userCat != -1 && $userfilter == -1) {
 		$relData = $rss->getRss(explode(',', $userCat), $userNum, $userShow, $userAnidb, $uid, $userAirDate);
+	} elseif ($userCat == -1 && $userfilter == -1) {
+		$relData = $rss->getRss(explode(',', $userCat), $userNum, $userShow, $userAnidb, $uid, $userAirDate);
 	}
 
 	if($userfilter != -1)
