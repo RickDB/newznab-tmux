@@ -105,9 +105,8 @@ if (!isset($_GET["t"]) && !isset($_GET["show"]) && !isset($_GET["anidb"])) {
 		]
 	);
 
-	// Check if user sends RSS search parameter
 	$userfilter = -1;
-	if (isset($_GET["uFilter"]))
+	if (isset($_GET["uFilter"]) && !empty($_GET["uFilter"]))
 		$userfilter = ($_GET["uFilter"]);
 	
 	if ($userCat == -3) {
@@ -118,7 +117,6 @@ if (!isset($_GET["t"]) && !isset($_GET["show"]) && !isset($_GET["anidb"])) {
 		$relData = $rss->getRss(explode(',', $userCat), $userNum, $userShow, $userAnidb, $uid, $userAirDate);
 	}
 
-	// RSS search subscriptions
 	if($userfilter != -1)
 	{
 		$catexclusions = $page->users->getCategoryExclusion($uid);
@@ -129,13 +127,12 @@ if (!isset($_GET["t"]) && !isset($_GET["show"]) && !isset($_GET["anidb"])) {
 		if (isset($_REQUEST['t'])) {
 			$categoryId = explode(',', $_REQUEST['t']);
 		}
+
+	    //search($searchName,$usenetName,$posterName,$fileName,$groupName,$sizeFrom,$sizeTo,$hasNfo,$hasComments,$daysNew,$daysOld,$offset = 0,$limit = 1000,$orderBy = '',$maxAge = -1,$excludedCats = [],$type = 'basic',$cat = [-1]	);
 	
 		// Min filesize 250MB (fromSize=2)
 		$relData = $releases->search($userfilter, -1, -1, -1, -1, 2, -1, 0, 0, -1, -1, 0, 250, 'posted_desc', -1, $catexclusions, "basic", $categoryId);
 	}
-	
-	// Optionally set rss title parameter for templates that support it
-	$page->smarty->assign('rsstitle', $page->title);
 
 	$page->smarty->assign('releases', $relData);
 	$response = trim($page->smarty->fetch('rss.tpl'));
