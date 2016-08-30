@@ -5,7 +5,7 @@
 </div>
 {else}
 <h1>
-{if isset($isadmin)}
+{if $isadmin}
 	<a title="Edit AniDB data" href="{$smarty.const.WWW_TOP}/admin/anidb-edit.php?id={$animeAnidbid}&amp;from={$smarty.server.REQUEST_URI|escape:"url"}">{$animeTitle} </a>
 {else}
 	{$animeTitle}
@@ -33,9 +33,9 @@
 	</div>
 	<small>With Selected:</small>
 		<input type="button" class="nzb_multi_operations_download btn btn-small btn-success" value="Download NZBs" />
-		<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Send to my Download Basket" />
+		<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Add to Cart" />
 		{if isset($sabintegrated) && $sabintegrated !=""}<input type="button" class="nzb_multi_operations_sab btn btn-small btn-primary" value="Send to queue" />{/if}
-	{if isset($isadmin)}
+	{if $isadmin}
 	&nbsp;&nbsp;
 		<input type="button" class="nzb_multi_operations_edit btn btn-small btn-warning" value="Edit" />
 		<input type="button" class="nzb_multi_operations_delete btn btn-small btn-danger" value="Delete" />
@@ -54,7 +54,7 @@
 				<tr class="{cycle values=",alt"}" id="guid{$result.guid}">
 					<td class="check"><input id="chk{$result.guid|substr:0:7}" type="checkbox" class="nzb_check" name="{$seasonnum}" value="{$result.guid}" /></td>
 					<td>
-						<a title="View details" href="{$smarty.const.WWW_TOP}/details/{$result.guid}">{$result.searchname|escape:"htmlall"|replace:".":" "}</a>
+						<a title="View details" href="{$smarty.const.WWW_TOP}/details/{$result.guid}/{$result.searchname|escape:"seourl"}">{$result.searchname|escape:"htmlall"|replace:".":" "}</a>
 					<div class="resextra">
 						<div class="btns">
 							{if $result.nfoid > 0}<a href="{$smarty.const.WWW_TOP}/nfo/{$result.guid}" title="View Nfo" class="modal_nfo rndbtn badge" rel="nfo">Nfo</a>{/if}
@@ -72,14 +72,14 @@
 								class="fa fa-comments-o text-muted"
 								title="Comments"></i></a>
 					<a href="#" class="icon_cart text-muted"><i
-								class="fa fa-shopping-basket" title="Send to my Download Basket"></i></a>
+								class="fa fa-shopping-cart" title="Add to Cart"></i></a>
 					{if isset($sabintegrated) && $sabintegrated !=""}
-						<a href="#" class="icon_sab text-muted"><i class="fa fa-share"
+						<a href="#" class="icon_sab text-muted"><i class="fa fa-cloud-download"
 																   title="Send to my Queue"></i></a>
 					{/if}
 					{if $weHasVortex}
 						<a href="#" class="icon_vortex text-muted"><i
-									class="fa fa-share" title="Send to NZBVortex"></i></a>
+									class="fa fa-cloud-download" title="Send to NZBVortex"></i></a>
 					{/if}
 				</tr>
 		{/foreach}

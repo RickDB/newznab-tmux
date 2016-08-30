@@ -29,12 +29,12 @@
 		</dl>
 		</div>
 		<form id="nzb_multi_operations_form" action="get">
-		<div class="well well-sm">
+		<div class="well well-small">
 			<div class="nzb_multi_operations">
 				With Selected:
 				<div class="btn-group">
 					<input type="button" class="nzb_multi_operations_download btn btn-small btn-success" value="Download NZBs" />
-					<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Send to my Download Basket" />
+					<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Add to Cart" />
 					{if isset($sabintegrated) && $sabintegrated !=""}<input type="button" class="nzb_multi_operations_sab btn btn-small btn-primary" value="Send to queue" />{/if}
 				</div>
 				<div class="btn-group pull-right">
@@ -49,7 +49,7 @@
 					<button data-quality="1080p" class="btn">1080p</button>
 					<button data-quality="2160p" class="btn">2160p</button>
 				</div>
-				{if isset($isadmin)}
+				{if $isadmin}
 				<div class="pull-right">
 					Admin:
 					<div class="btn-group">
@@ -60,17 +60,52 @@
 				{/if}
 			</div>
 		</div>
-		<table style="width:100%;" class="data highlight icons table" id="browsetable">
+		<table style="width:100%;" class="data highlight icons table table-striped" id="browsetable">
 			<tr class="dont-filter">
 				<th>
 					<input id="chkSelectAll" type="checkbox" class="nzb_check_all" />
 					<label for="chkSelectAll" style="display:none;">Select All</label>
 				</th>
-				<th>name</th>
-				<th>category</th>
-				<th>posted</th>
-				<th>size</th>
-				<th>files<</th>
+				<th>name<br/>
+					<a title="Sort Descending" href="{$orderbyname_desc}">
+						<i class="fa fa-caret-down"></i>
+					</a>
+					<a title="Sort Ascending" href="{$orderbyname_asc}">
+						<i class="fa fa-caret-up"></i>
+					</a>
+				</th>
+				<th>category<br/>
+					<a title="Sort Descending" href="{$orderbycat_desc}">
+						<i class="fa fa-caret-down"></i>
+					</a>
+					<a title="Sort Ascending" href="{$orderbycat_asc}">
+						<i class="fa fa-caret-up"></i>
+					</a>
+				</th>
+				<th>posted<br/>
+					<a title="Sort Descending" href="{$orderbyposted_desc}">
+						<i class="fa fa-caret-down"></i>
+					</a>
+					<a title="Sort Ascending" href="{$orderbyposted_asc}">
+						<i class="fa fa-caret-up"></i>
+					</a>
+				</th>
+				<th>size<br/>
+					<a title="Sort Descending" href="{$orderbysize_desc}">
+						<i class="fa fa-caret-down"></i>
+					</a>
+					<a title="Sort Ascending" href="{$orderbysize_asc}">
+						<i class="fa fa-caret-up"></i>
+					</a>
+				</th>
+				<th>files<br/>
+					<a title="Sort Descending" href="{$orderbyfiles_desc}">
+						<i class="fa fa-caret-down"></i>
+					</a>
+					<a title="Sort Ascending" href="{$orderbyfiles_asc}">
+						<i class="fa fa-caret-up"></i>
+					</a>
+				</th>
 				<th>action</th>
 			</tr>
 		{assign var="msplits" value=","|explode:$result.grp_release_id}
@@ -92,7 +127,7 @@
 				<td class="check"><input id="chk{$mguid[$m@index]|substr:0:7}" type="checkbox" class="nzb_check" value="{$mguid[$m@index]}" /></td>
 				<td class="item">
 					<label for="chk{$mguid[$m@index]|substr:0:7}">
-						<a class="title" title="View details" href="{$smarty.const.WWW_TOP}/details/{$mguid[$m@index]}">{$mname[$m@index]|escape:"htmlall"|replace:".":" "}</a>
+						<a class="title" title="View details" href="{$smarty.const.WWW_TOP}/details/{$mguid[$m@index]}/{$mname[$m@index]|escape:"seourl"}">{$mname[$m@index]|escape:"htmlall"|replace:".":" "}</a>
 					</label>
 					{if $mpass[$m@index] == 2}
 						<i class="fa fa-lock"></i>
@@ -115,22 +150,22 @@
 					<td class="icons" style='width:100px;'>
 						<ul class="inline">
 							<li>
-								<a class="icon icon_nzb fa fa-cloud-download" style="text-decoration: none; color: #7ab800;" title="Download Nzb" href="{$smarty.const.WWW_TOP}/getnzb/{$mguid[$m@index]}"></a>
+								<a class="icon icon_nzb fa fa-download" style="text-decoration: none; color: #7ab800;" title="Download Nzb" href="{$smarty.const.WWW_TOP}/getnzb/{$mguid[$m@index]}"></a>
 							</li>
 							<li>
-								<a  href="#" class="icon icon_cart fa fa-shopping-basket" style="text-decoration: none; color: #5c5c5c;" title="Send to my Download Basket">
+								<a  href="#" class="icon icon_cart fa fa-shopping-cart" style="text-decoration: none; color: #5c5c5c;" title="Add to Cart">
 								</a>
 							</li>
 							{if isset($sabintegrated) && $sabintegrated !=""}
 							<li>
-								<a class="icon icon_sab fa fa-share" style="text-decoration: none; color: #008ab8;"  href="#" title="Send to queue">
+								<a class="icon icon_sab fa fa-cloud-download" style="text-decoration: none; color: #008ab8;"  href="#" title="Send to queue">
 								</a>
 							</li>
 							{/if}
 							{if $weHasVortex}
 								<li>
-									<a class="icon icon_nzb fa fa-cloud-downloadvortex" href="#" title="Send to NZBVortex">
-										<img class="icon icon_nzb fa fa-cloud-downloadvortex" alt="Send to my NZBVortex" src="{$smarty.const.WWW_THEMES}/shared/images/icons/vortex/bigsmile.png">
+									<a class="icon icon_nzb fa fa-downloadvortex" href="#" title="Send to NZBVortex">
+										<img class="icon icon_nzb fa fa-downloadvortex" alt="Send to my NZBVortex" src="{$smarty.const.WWW_THEMES}/shared/images/icons/vortex/bigsmile.png">
 									</a>
 								</li>
 							{/if}
@@ -143,13 +178,13 @@
 	<br/>
 	{$pager}
 	{if $results|@count > 10}
-		<div class="well well-sm">
+		<div class="well well-small">
 			<div class="nzb_multi_operations">
 				{if isset($section) && $section != ''}View: <a href="{$smarty.const.WWW_TOP}/{$section}?t={$category}">Covers</a> | <b>List</b><br />{/if}
 				With Selected:
 				<div class="btn-group">
 					<input type="button" class="nzb_multi_operations_download btn btn-small btn-success" value="Download NZBs" />
-					<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Send to my Download Basket" />
+					<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Add to Cart" />
 					{if isset($sabintegrated) && $sabintegrated !=""}<input type="button" class="nzb_multi_operations_sab btn btn-small btn-primary" value="Send to queue" />{/if}
 				</div>
 				<div class="btn-group pull-right">
@@ -164,7 +199,7 @@
 					<button data-quality="1080p" class="btn">1080p</button>
 					<button data-quality="complete Rbluray" class="BDISK">HDTV</button>
 				</div>
-				{if isset($isadmin)}
+				{if $isadmin}
 				<div class="pull-right">
 					Admin:
 					<div class="btn-group">

@@ -1,7 +1,6 @@
 <ul class="breadcrumb">
-	{assign var="catsplit" value=">"|explode:$catname}
-	<li><a href="{$smarty.const.WWW_TOP}{$site->home_link}">Home</a></li>
-	/ {if isset($catsplit[0])} {$catsplit[0]}{/if} / {if isset($catsplit[1])} {$catsplit[1]}{/if}
+	<li><a href="{$smarty.const.WWW_TOP}{$site->home_link}">Home</a> <span class="divider">/</span></li>
+	<li class="active">{$catname|escape:"htmlall"}</li>
 </ul>
 
 {$site->adbrowse}
@@ -21,7 +20,7 @@
 
 <form id="nzb_multi_operations_form" action="get">
 
-	<div class="well well-sm">
+	<div class="well well-small">
 		<div class="nzb_multi_operations">
 			<table width="100%">
 				<tr>
@@ -29,15 +28,14 @@
 						With Selected:
 						<div class="btn-group">
 							<input type="button" class="nzb_multi_operations_download btn btn-small btn-success" value="Download NZBs" />
-							<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Send to my Download Basket" />
+							<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Add to Cart" />
 							{if isset($sabintegrated) && $sabintegrated !=""}<input type="button" class="nzb_multi_operations_sab btn btn-small btn-primary" value="Send to queue" />{/if}
 						</div>
-						{if isset($covgroup) && $covgroup != ''}View:
-							<a href="{$smarty.const.WWW_TOP}/{$covgroup}?t={$category}">Covers
-							</a>
-							|
-							<b>List</b>
-							<br/>
+						{if (strpos($category, '60')  !== false)}
+							&nbsp;&nbsp;&nbsp;&nbsp;<a title="Switch to Cover view" href="{$smarty.const.WWW_TOP}/xxx"><i class="fa fa-lg fa-file-image-o"></i></a>
+						{/if}
+						{if (strpos($category, '20') !== false)}
+							&nbsp;&nbsp;&nbsp;&nbsp;<a title="Switch to Cover view" href="{$smarty.const.WWW_TOP}/movies"><i class="fa fa-lg fa-file-image-o"></i></a>
 						{/if}
 					</td>
 					<td width="50%">
@@ -48,7 +46,7 @@
 					<td width="20%">
 						<div class="pull-right">
 						<a class="btn btn-small" title="All releases in your shows as an RSS feed" href="{$smarty.const.WWW_TOP}/rss?t={$category}&amp;dl=1&amp;i={$userdata.id}&amp;r={$userdata.rsstoken}">Rss <i class="fa fa-rss"></i></a>
-						{if isset($isadmin)}
+						{if $isadmin}
 							Admin:
 							<div class="btn-group">
 								<input type="button" class="nzb_multi_operations_edit btn btn-small btn-warning" value="Edit" />
@@ -65,9 +63,9 @@
 			</table>
 		</div>
 	</div>
-	<table style="100%" class="data highlight icons table" id="browsetable">
+	<table style="100%" class="data highlight icons table table-striped" id="browsetable">
 		<tr>
-			<th style="padding-top:0; padding-bottom:0;">
+			<th style="padding-top:0px; padding-bottom:0px;">
 				<input id="chkSelectAll" type="checkbox" class="nzb_check_all" />
 				<label for="chkSelectAll" style="display:none;">Select All</label>
 			</th>
@@ -76,11 +74,10 @@
 			<th>Posted</th>
 			<th>Size</th>
 			<th>Files</th>
-			<th>Grabs</th>
 			<th>Action</th>
 		</tr>
 		{foreach $results as $result}
-		<tr class="{cycle values=",alt"}" id="guid{$result.guid}">
+		<tr class="{cycle values=",alt"}{if $lastvisit|strtotime<$result.adddate|strtotime} new{/if}" id="guid{$result.guid}">
 			{if (strpos($category, '60') !== false)}
 					<td class="check" width="25%"><input id="chk{$result.guid|substr:0:7}"
 					 type="checkbox" class="nzb_check"
@@ -100,7 +97,7 @@
 			{/if}
 			<td class="item">
 				<label for="chk{$result.guid|substr:0:7}">
-					<a class="title" title="View details"  href="{$smarty.const.WWW_TOP}/details/{$result.guid}"><h5>{$result.searchname|escape:"htmlall"|replace:".":" "} {if $lastvisit|strtotime < $result.adddate|strtotime} <a href="#" class="badge badge-success">New</a>{/if}</h5></a>
+					<a class="title" title="View details"  href="{$smarty.const.WWW_TOP}/details/{$result.guid}/{$result.searchname|escape:"seourl"}"><h5>{$result.searchname|escape:"htmlall"|replace:".":" "}</h5></a>
 				</label>
 				{if $result.passwordstatus == 2}
 				<i class="fa fa-lock"></i>
@@ -131,14 +128,14 @@
 						<a href="#" name="audio{$result.guid}" title="Listen to Preview" class="audioprev badge badge-success halffade" rel="audio">Listen</a>
 						<audio id="audprev{$result.guid}" src="{$smarty.const.WWW_TOP}/covers/audio/{$result.guid}.mp3" preload="none"></audio>
 						{/if}
-						{if $result.musicinfo_id > 0}
-						<a href="#" name="name{$result.musicinfo_id}" title="View music info" class="modal_music badge badge-success halffade" rel="music" >Cover</a>
+						{if $result.musicinfoid > 0}
+						<a href="#" name="name{$result.musicinfoid}" title="View music info" class="modal_music badge badge-success halffade" rel="music" >Cover</a>
 						{/if}
-						{if $result.consoleinfo_id > 0}
-						<a href="#" name="name{$result.consoleinfo_id}" title="View console info" class="modal_console badge badge-success halffade" rel="console" >Cover</a>
+						{if $result.consoleinfoid > 0}
+						<a href="#" name="name{$result.consoleinfoid}" title="View console info" class="modal_console badge badge-success halffade" rel="console" >Cover</a>
 						{/if}
-						{if $result.bookinfo_id > 0}
-						<a href="#" name="name{$result.bookinfo_id}" title="View book info" class="modal_book badge badge-success halffade" rel="console" >Cover</a>
+						{if $result.bookinfoid > 0}
+						<a href="#" name="name{$result.bookinfoid}" title="View book info" class="modal_book badge badge-success halffade" rel="console" >Cover</a>
 						{/if}
 						{if $result.videos_id > 0}
 						<a class="badge badge-inverse halffade" href="{$smarty.const.WWW_TOP}/series/{$result.videos_id}">View Series</a>
@@ -146,7 +143,7 @@
 						{if $result.anidbid > 0}
 						<a class="badge badge-inverse halffade" href="{$smarty.const.WWW_TOP}/anime/{$result.anidbid}" title="View all episodes">View Anime</a>
 						{/if}
-						{if !empty($result.firstaired)}
+						{if isset($result.firstaired) && $result.firstaired != ""}
 							<span class="seriesinfo badge badge-success halffade" title="{$result.guid}"> Aired {if $result.firstaired|strtotime > $smarty.now}in future{else}{$result.firstaired|daysago}{/if}</span>
 						{/if}
 						{if $result.videostatus > 0}
@@ -155,8 +152,8 @@
 						{if $result.reid > 0}
 						<span class="mediainfo badge badge-inverse halffade" title="{$result.guid}">Media</span>
 						{/if}
-						{if $result.predb_id > 0}
-						<span class="preinfo badge badge-inverse halffade" title="{$result.predb_id}">PreDb</span>
+						{if $result.preid > 0}
+						<span class="preinfo badge badge-inverse halffade" title="{$result.preid}">PreDb</span>
 						{/if}
 							{if !empty($result.failed)}
 								<span class="badge badge-inverse"><i class ="fa fa-thumbs-o-up"></i> {$result.grabs} Grab{if $result.grabs != 1}s{/if} / <i class ="fa fa-thumbs-o-down"></i> {$result.failed} Failed Download{if $result.failed != 1}s{/if}</span>
@@ -168,7 +165,7 @@
 			</td>
 
 			<td class="less">
-				<a title="Browse {$result.category_name}" href="{$smarty.const.WWW_TOP}/browse?t={$result.categories_id}">{$result.category_name}</a>
+				<a title="Browse {$result.category_name}" href="{$smarty.const.WWW_TOP}/browse?t={$category}">{$result.category_name}</a>
 			</td>
 
 			<td class="less mid" title="{$result.postdate}">{$result.postdate|timeago}</td>
@@ -192,26 +189,25 @@
 				</div>
 				{/if}
 			</td>
-			<td class="less mid"><span class="label label-default">{$result.grabs} Grab{if $result.grabs != 1}s{/if}</span></td>
 			<td class="icons" style='width:100px;'>
 				<ul class="inline">
 					<li>
-						<a class="icon icon_nzb fa fa-cloud-download" style="text-decoration: none; color: #7ab800;" title="Download Nzb" href="{$smarty.const.WWW_TOP}/getnzb/{$result.guid}"></a>
+						<a class="icon icon_nzb fa fa-download" style="text-decoration: none; color: #7ab800;" title="Download Nzb" href="{$smarty.const.WWW_TOP}/getnzb/{$result.guid}"></a>
 					</li>
 					<li>
-						<a href="#" class="icon icon_cart fa fa-shopping-basket" style="text-decoration: none; color: #5c5c5c;" title="Send to my Download Basket">
+						<a href="#" class="icon icon_cart fa fa-shopping-cart" style="text-decoration: none; color: #5c5c5c;" title="Add to Cart">
 						</a>
 					</li>
 					{if isset($sabintegrated) && $sabintegrated !=""}
 					<li>
-						<a class="icon icon_sab fa fa-share" style="text-decoration: none; color: #008ab8;"  href="#" title="Send to queue">
+						<a class="icon icon_sab fa fa-cloud-download" style="text-decoration: none; color: #008ab8;"  href="#" title="Send to queue">
 						</a>
 					</li>
 					{/if}
                     {if $weHasVortex}
                         <li>
-                            <a class="icon icon_nzb fa fa-cloud-downloadvortex" href="#" title="Send to NZBVortex">
-                                <img class="icon icon_nzb fa fa-cloud-downloadvortex" alt="Send to my NZBVortex" src="{$smarty.const.WWW_THEMES}/shared/images/icons/vortex/bigsmile.png">
+                            <a class="icon icon_nzb fa fa-downloadvortex" href="#" title="Send to NZBVortex">
+                                <img class="icon icon_nzb fa fa-downloadvortex" alt="Send to my NZBVortex" src="{$smarty.const.WWW_THEMES}/shared/images/icons/vortex/bigsmile.png">
                             </a>
                         </li>
                     {/if}
@@ -222,7 +218,7 @@
 	</table>
 
 	{if $results|@count > 10}
-	<div class="well well-sm">
+	<div class="well well-small">
 		<div class="nzb_multi_operations">
 			<table width="100%">
 				<tr>
@@ -230,7 +226,7 @@
 						With Selected:
 						<div class="btn-group">
 							<input type="button" class="nzb_multi_operations_download btn btn-small btn-success" value="Download NZBs" />
-							<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Send to my Download Basket" />
+							<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Add to Cart" />
 							{if isset($sabintegrated) && $sabintegrated !=""}<input type="button" class="nzb_multi_operations_sab btn btn-small btn-primary" value="Send to queue" />{/if}
 						</div>
 						{if isset($section) && $section != ''}View:
@@ -247,7 +243,7 @@
 					</td>
 					<td width="20%">
 						<div class="pull-right">
-						{if isset($isadmin)}
+						{if $isadmin}
 							Admin:
 							<div class="btn-group">
 								<input type="button" class="nzb_multi_operations_edit btn btn-small btn-warning" value="Edit" />

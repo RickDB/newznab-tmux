@@ -1,13 +1,37 @@
 <h2>Browse {$catname}</h2>
-<div class="well well-sm">
-	<div style="text-align: center;">
-		{include file='search-filter.tpl'}
-	</div>
+<div class="well well-small">
+	<center>
+		<form class="form-inline" name="browseby" action="xxx" style="margin:0;">
+			<i class="fa fa-film fa-midt"></i>
+			<input class="input input-medium" id="title" type="text" name="title" value="{$title}" placeholder="Title"/>
+			<i class="fa fa-group fa-midt"></i>
+			<input class="input input-medium" id="actors" type="text" name="actors" value="{$actors}"
+				   placeholder="Actor"/>
+			<i class="fa fa-bullhorn fa-midt"></i>
+			<input class="input input-medium" id="director" type="text" name="director" value="{$director}"
+				   placeholder="Director"/>
+			<i class="fa fa-inbox fa-midt"></i>
+			<select class="input input-medium" id="genre" name="genre">
+				<option class="grouping" value=""></option>
+				{foreach from=$genres item=gen}
+					<option {if $gen==$genre}selected="selected"{/if} value="{$gen}">{$gen}</option>
+				{/foreach}
+			</select>
+			<i class="fa fa-flag fa-midt"></i>
+			<select class="input input-medium" id="category" name="category">
+				<option class="grouping" value=""></option>
+				{foreach from=$catlist item=cat}
+					<option {if $cat.id==$category}selected="selected"{/if} value="{$cat.id}">{$cat.title}</option>
+				{/foreach}
+			</select>
+			<input class="btn btn-success" type="submit" value="Go"/>
+		</form>
+	</center>
 </div>
 {$site->adbrowse}
 {if $results|@count > 0}
 	<form id="nzb_multi_operations_form" action="get">
-		<div class="well well-sm">
+		<div class="well well-small">
 			<div class="nzb_multi_operations">
 				<table width="100%">
 					<tr>
@@ -17,23 +41,26 @@
 								<input type="button" class="nzb_multi_operations_download btn btn-small btn-success"
 									   value="Download NZBs"/>
 								<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info"
-									   value="Send to my Download Basket"/>
-								{if isset($sabintegrated) && $sabintegrated !=""}
+									   value="Add to cart"/>
+								{if $sabintegrated}
 									<input type="button" class="nzb_multi_operations_sab btn btn-small btn-primary"
 										   value="Send to queue"/>
 								{/if}
+								{if isset($nzbgetintegrated)}
+									<input type="button" class="nzb_multi_operations_nzbget btn btn-small btn-primary"
+										   value="Send to NZBGet"/>
+								{/if}
 							</div>
-							View: <strong>Covers</strong> | <a
-									href="{$smarty.const.WWW_TOP}/browse?t={$category}">List</a><br/>
-						</td>
+							&nbsp;&nbsp;&nbsp;&nbsp;<a title="Switch to List view" href="{$smarty.const.WWW_TOP}/browse?t={$category}"><i class="fa fa-lg fa-align-justify"></i></a>						
+							</td>
 						<td width="50%">
-							<div style="text-align: center;">
+							<center>
 								{$pager}
-							</div>
+							</center>
 						</td>
 						<td width="20%">
 							<div class="pull-right">
-								{if isset($isadmin)}
+								{if $isadmin}
 									Admin:
 									<div class="btn-group">
 										<input type="button" class="nzb_multi_operations_edit btn btn-small btn-warning"
@@ -50,7 +77,7 @@
 				</table>
 			</div>
 		</div>
-		<table style="width:100%;" class="data highlight icons table" id="coverstable">
+		<table style="width:100%;" class="data highlight icons table table-striped" id="coverstable">
 			<tr>
 				<th width="130" style="padding-top:0px; padding-bottom:0px;">
 					<input type="checkbox" class="nzb_check_all"/>
@@ -64,7 +91,7 @@
 					</a>
 				</th>
 			</tr>
-			{foreach $results as $result}
+			{foreach from=$results item=result}
 				{assign var="msplits" value=","|explode:$result.grp_release_id}
 				{assign var="mguid" value=","|explode:$result.grp_release_guid}
 				{assign var="mnfo" value=","|explode:$result.grp_release_nfoid}
@@ -85,34 +112,45 @@
 						<div class="movcover">
 							<h4>
 								<a target="_blank"
-										{foreach $msplits as $m}
-											{if $previewfound == 0}
-												{if $mhaspreview[$m@index] == 1 && $userdata.canpreview == 1}
-													{$previewfound = 1}
-													{$previewguid = $mguid[$m@index]}
-												{/if}
-											{/if}
-										{/foreach}
-								   href="{$smarty.const.WWW_TOP}/xxx/?id={$result.id}"
-								   name="name{$result.id}"
-								   guid="name{$previewguid}"
-								   title="View XXX info"
-								   class="modal_xxx thumbnail" rel="viewxxx">
-									{if $result.cover == 1}
-										<img class="shadow img-polaroid" src="{$smarty.const.WWW_TOP}/covers/xxx/{$result.id}-cover.jpg" width="120" border="0" alt="{$result.title|escape:"htmlall"}"/>
-									{else} <img class="shadow img-polaroid" src="{$smarty.const.WWW_THEMES}/shared/images/no-cover.png" width="120" border="0" alt="{$result.title|escape:"htmlall"}"/>
+								{foreach from=$msplits item=m}
+									{if $previewfound == 0}
+										{if $mhaspreview[$m@index] == 1 && $userdata.canpreview == 1}
+											{$previewfound = 1}
+											{$previewguid = $mguid[$m@index]}
+										{/if}
 									{/if}
+								{/foreach}
+
+								href="{$smarty.const.WWW_TOP}/xxx/?id={$result.id}"
+								name="name{$result.id}"
+								guid="name{$previewguid}"
+
+								title="View XXX info"
+								class="modal_xxx thumbnail" rel="viewxxx">
+								<img
+									class="shadow img-polaroid" src="
+										{if $result.cover == 1}
+											{$smarty.const.WWW_TOP}covers/xxx/{$result.id}-cover.jpg"
+										{else}
+											{if $previewguid == ''}
+												{$smarty.const.WWW_TOP}themes/shared/images/nocover.png"
+												{else}
+													{$smarty.const.WWW_TOP}/covers/preview/{$previewguid}_thumb.jpg"
+											{/if}
+										{/if}
+									style="max-width: 120px; /*width: auto;*/" width="120" border="0" alt="{$result.title|escape:"htmlall"}"
+								/>
 								</a>
 							</h4>
 							<div class="movextra">
-								<div style="text-align: center;">
+								<center>
 									{if $result.classused == "ade"}
 										<a
 												target="_blank"
 												href="{$site->dereferrer_link}{$result.directurl}"
 												name="viewade{$result.title}"
 												title="View AdultdvdEmpire page"
-										><img src="{$smarty.const.WWW_THEMES}/shared/images/icons/ade.png"></a>
+										><img src="{$smarty.const.WWW_TOP}/themes/shared/images/icons/ade.png"></a>
 									{else}
 										<a
 												target="_blank"
@@ -120,7 +158,7 @@
 												name="viewade{$result.title}"
 												title="Search AdultdvdEmpire page"
 										><img
-													src="{$smarty.const.WWW_THEMES}/shared/images/icons/ade.png"></a>
+													src="{$smarty.const.WWW_TOP}/themes/shared/images/icons/ade.png"></a>
 									{/if}
 									{if $result.classused == "hm"}
 										<a
@@ -129,7 +167,7 @@
 												name="viewhm{$result.title}"
 												title="View Hot Movies page"
 										><img
-													src="{$smarty.const.WWW_THEMES}/shared/images/icons/hotmovies.png"></a>
+													src="{$smarty.const.WWW_TOP}/themes/shared/images/icons/hotmovies.png"></a>
 									{else}
 										<a
 												target="_blank"
@@ -137,7 +175,7 @@
 												name="viewhm{$result.title}"
 												title="Search Hot Movies page"
 										><img
-													src="{$smarty.const.WWW_THEMES}/shared/images/icons/hotmovies.png"></a>
+													src="{$smarty.const.WWW_TOP}/themes/shared/images/icons/hotmovies.png"></a>
 									{/if}
 									{if $result.classused == "pop"}
 										<a
@@ -146,7 +184,7 @@
 												name="viewpop{$result.id}"
 												title="View Popporn page"
 										><img
-													src="{$smarty.const.WWW_THEMES}/shared/images/icons/popporn.png"></a>
+													src="{$smarty.const.WWW_TOP}/themes/shared/images/icons/popporn.png"></a>
 									{else}
 										<a
 												target="_blank"
@@ -154,7 +192,7 @@
 												name="viewpop{$result.id}"
 												title="Search Popporn page"
 										><img
-													src="{$smarty.const.WWW_THEMES}/shared/images/icons/popporn.png"></a>
+													src="{$smarty.const.WWW_TOP}/themes/shared/images/icons/popporn.png"></a>
 									{/if}
 									<a
 											target="_blank"
@@ -162,8 +200,8 @@
 											name="viewiafd{$result.title}"
 											title="Search Internet Adult Film Database"
 									><img
-												src="{$smarty.const.WWW_THEMES}/shared/images/icons/iafd.png"></a>
-								</div>
+												src="{$smarty.const.WWW_TOP}/themes/shared/images/icons/iafd.png"></a>
+								</center>
 							</div>
 						</div>
 					</td>
@@ -202,14 +240,14 @@
 						{/if}
 						<div class="movextra">
 							<table class="table" style="margin-bottom:0px; margin-top:10px">
-								{foreach $msplits as $m}
+								{foreach from=$msplits item=m}
 									<tr id="guid{$mguid[$m@index]}" {if $m@index > 0}class="mlextra"{/if}>
 										<td>
 											<div class="icon"><input type="checkbox" class="nzb_check"
 																	 value="{$mguid[$m@index]}"/></div>
 										</td>
 										<td>
-											<a href="{$smarty.const.WWW_TOP}/details/{$mguid[$m@index]}">
+											<a href="{$smarty.const.WWW_TOP}/details/{$mguid[$m@index]}/{$mname[$m@index]|escape:"seourl"}">
 												&nbsp;{$mname[$m@index]|escape:"htmlall"}</a>
 											<ul class="inline">
 												<li width="100px">Posted {$mpostdate[$m@index]|timeago}</li>
@@ -244,30 +282,38 @@
 										<td class="icons" style='width:100px;'>
 											<ul class="inline">
 												<li>
-													<a class="icon icon_nzb fa fa-cloud-download"
+													<a class="icon icon_nzb fa fa-download"
 													   style="text-decoration: none; color: #7ab800;"
 													   title="Download Nzb"
 													   href="{$smarty.const.WWW_TOP}/getnzb/{$mguid[$m@index]}"></a>
 												</li>
 												<li>
-													<a class="icon icon_cart fa fa-shopping-basket"
+													<a class="icon icon_cart fa fa-shopping-cart"
 													   style="text-decoration: none; color: #5c5c5c;"
-													   title="Send to my Download Basket">
+													   title="Add to cart">
 													</a>
 												</li>
-												{if isset($sabintegrated) && $sabintegrated !=""}
+												{if $sabintegrated}
 													<li>
-														<a class="icon icon_sab fa fa-share"
+														<a class="icon icon_sab fa fa-cloud-download"
 														   style="text-decoration: none; color: #008ab8;" href="#"
 														   title="Send to queue">
 														</a>
 													</li>
 												{/if}
+												{if isset($nzbgetintegrated)}
+													<li>
+														<a class="icon icon_nzb fa fa-downloadget" href="#"
+														   title="Send to NZBGet">
+															<img src="{$smarty.const.WWW_THEMES}/{$theme}/images/icons/nzbgetup.png">
+														</a>
+													</li>
+												{/if}
 												{if $weHasVortex}
 													<li>
-														<a class="icon icon_nzb fa fa-cloud-downloadvortex" href="#"
+														<a class="icon icon_nzb fa fa-downloadvortex" href="#"
 														   title="Send to NZBVortex">
-															<img src="{$smarty.const.WWW_THEMES}/shared/images/icons/vortex/bigsmile.png">
+															<img src="{$smarty.const.WWW_THEMES}/{$theme}/images/icons/vortex/bigsmile.png">
 														</a>
 													</li>
 												{/if}
@@ -289,28 +335,39 @@
 			{/foreach}
 		</table>
 		{if $results|@count > 10}
-			<div class="well well-sm">
+			<div class="well well-small">
 				<div class="nzb_multi_operations">
 					<table width="100%">
 						<tr>
 							<td width="30%">
 								With Selected:
 								<div class="btn-group">
-									<input type="button" class="nzb_multi_operations_download btn btn-small btn-success" value="Download NZBs" />
-									<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Send to my Download Basket" />
-									{if isset($sabintegrated) && $sabintegrated !=""}<input type="button" class="nzb_multi_operations_sab btn btn-small btn-primary" value="Send to queue" />{/if}
+									<input type="button" class="nzb_multi_operations_download btn btn-small btn-success"
+										   value="Download NZBs"/>
+									<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info"
+										   value="Add to cart"/>
+									{if $sabintegrated}
+										<input type="button" class="nzb_multi_operations_sab btn btn-small btn-primary"
+											   value="Send to queue"/>
+									{/if}
+									{if isset($nzbgetintegrated)}
+										<input type="button"
+											   class="nzb_multi_operations_nzbget btn btn-small btn-primary"
+											   value="Send to NZBGet"/>
+									{/if}
 								</div>
-								View: <strong>Covers</strong> | <a
-										href="{$smarty.const.WWW_TOP}/browse?t={$category}">List</a><br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;<a title="Switch to List view"
+														   href="{$smarty.const.WWW_TOP}/browse?t={$category}"><i
+											class="fa fa-lg fa-list-ol"></i></a>
 							</td>
 							<td width="50%">
-								<div style="text-align: center;">
+								<center>
 									{$pager}
-								</div>
+								</center>
 							</td>
 							<td width="20%">
 								<div class="pull-right">
-									{if isset($isadmin)}
+									{if $isadmin}
 										Admin:
 										<div class="btn-group">
 											<input type="button"

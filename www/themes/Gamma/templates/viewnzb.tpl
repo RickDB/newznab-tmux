@@ -4,7 +4,7 @@
 <div id="content">
 	<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
 		<li class="active"><a href="#info" data-toggle="tab">Info</a></li>
-		{if $reVideo.releases_id|@count > 0 || $reAudio|@count > 0}
+		{if $reVideo.releaseid|@count > 0 || $reAudio|@count > 0}
 			<li><a href="#mediainfo" data-toggle="tab">Media info</a></li>
 		{/if}
 		{if $release.jpgstatus == 1 && $userdata.canpreview == 1}
@@ -25,30 +25,30 @@
 		{/if}
 		<li><a href="#comments" data-toggle="tab">Comments</a></li>
 	</ul>
+	{if $show && $release.videos_id > 0 && $show.image != '0'}<img class="shadow img-polaroid pull-right" src="{$smarty.const.WWW_TOP}/covers/tvshows/{$release.videos_id}.jpg" width="180" alt="{$show.title|escape:"htmlall"}" />{/if}
+	{if $movie && $release.videos_id == 0 && $movie.cover == 1}<img class="shadow img-polaroid pull-right" src="{$smarty.const.WWW_TOP}/covers/movies/{$movie.imdbid}-cover.jpg" width="180" alt="{$movie.title|escape:"htmlall"}" />{/if}
+	{if $anidb && $release.anidbid > 0 && $anidb.picture != ""}<img class="shadow img-polaroid pull-right" src="{$smarty.const.WWW_TOP}/covers/anime/{$anidb.anidbid}.jpg" width="180" alt="{$anidb.title|escape:"htmlall"}" />{/if}
+	{if $con && $con.cover == 1}<img class="shadow img-polaroid pull-right" src="{$smarty.const.WWW_TOP}/covers/console/{$con.id}.jpg" width="160" alt="{$con.title|escape:"htmlall"}" />{/if}
+	{if $music && $music.cover == 1}<img class="shadow img-polaroid pull-right" src="{$smarty.const.WWW_TOP}/covers/music/{$music.id}.jpg" width="160" alt="{$music.title|escape:"htmlall"}" />{/if}
+	{if $book && $book.cover == 1}<img class="shadow img-polaroid pull-right" src="{$smarty.const.WWW_TOP}/covers/book/{$book.id}.jpg" width="160" alt="{$book.title|escape:"htmlall"}" />{/if}
+	{if $game && $game.cover == 1}
+		<img class="shadow img-polaroid pull-right" src="{$smarty.const.WWW_TOP}/covers/games/{$game.id}.jpg" width="160" alt="{$con.title|escape:"htmlall"}"/>
+	{/if}
+	{if $xxx && $xxx.cover == 1}
+		<img class="shadow img-polaroid pull-right" src="{$smarty.const.WWW_TOP}/covers/xxx/{$xxx.id}-cover.jpg" width="160" alt="{$xxx.title|escape:"htmlall"}"/>
+	{/if}
+	{if $isadmin}
+		<div class="well well-small pull-right">
+			Admin :
+			<div class="btn-group">
+				<a href="{$smarty.const.WWW_TOP}/admin/release-edit.php?id={$release.id}&amp;from={$smarty.server.REQUEST_URI}" class="btn btn-small btn-warning" >Edit</a>
+				<a href="{$smarty.const.WWW_TOP}/admin/release-delete.php?id={$release.id}&amp;from={$smarty.server.HTTP_REFERER}" class=" btn btn-small btn-danger" >Delete</a>
+			</div>
+		</div>
+	{/if}
 	<div id="my-tab-content" class="tab-content">
 		<div class="tab-pane active" id="info">
-			{if $show && $release.videos_id > 0 && $show.image != '0'}<img class="shadow img-polaroid pull-right" style="margin-right:50px; margin-top:80px;" src="{$smarty.const.WWW_TOP}/covers/tvshows/{$release.videos_id}.jpg" width="180" alt="{$show.title|escape:"htmlall"}" />{/if}
-			{if $movie && $release.videos_id == 0 && $movie.cover == 1}<img class="shadow img-polaroid pull-right" style="margin-right:50px; margin-top:80px;" src="{$smarty.const.WWW_TOP}/covers/movies/{$movie.imdbid}-cover.jpg" width="180" alt="{$movie.title|escape:"htmlall"}" />{/if}
-			{if $anidb && $release.anidbid > 0 && $anidb.picture != ""}<img class="shadow img-polaroid pull-right" style="margin-right:50px; margin-top:80px;" src="{$smarty.const.WWW_TOP}/covers/anime/{$anidb.anidbid}.jpg" width="180" alt="{$anidb.title|escape:"htmlall"}" />{/if}
-			{if $con && $con.cover == 1}<img class="shadow img-polaroid pull-right" style="margin-right:50px; margin-top:80px;" src="{$smarty.const.WWW_TOP}/covers/console/{$con.id}.jpg" width="160" alt="{$con.title|escape:"htmlall"}" />{/if}
-			{if $music && $music.cover == 1}<img class="shadow img-polaroid pull-right" style="margin-right:50px; margin-top:80px;" src="{$smarty.const.WWW_TOP}/covers/music/{$music.id}.jpg" width="160" alt="{$music.title|escape:"htmlall"}" />{/if}
-			{if $book && $book.cover == 1}<img class="shadow img-polaroid pull-right" style="margin-right:50px; margin-top:80px;" src="{$smarty.const.WWW_TOP}/covers/book/{$book.id}.jpg" width="160" alt="{$book.title|escape:"htmlall"}" />{/if}
-			{if $game && $game.cover == 1}
-				<img class="shadow img-polaroid pull-right" style="margin-right:50px; margin-top:80px;"  src="{$smarty.const.WWW_TOP}/covers/games/{$game.id}.jpg" width="160" alt="{$con.title|escape:"htmlall"}"/>
-			{/if}
-			{if $xxx && $xxx.cover == 1}
-				<img class="shadow img-polaroid pull-right" style="margin-right:50px; margin-top:80px;"  src="{$smarty.const.WWW_TOP}/covers/xxx/{$xxx.id}-cover.jpg" width="160" alt="{$xxx.title|escape:"htmlall"}"/>
-			{/if}
-			{if isset($isadmin)}
-				<div class="well well-sm pull-right">
-					Admin :
-					<div class="btn-group">
-						<a href="{$smarty.const.WWW_TOP}/admin/release-edit.php?id={$release.id}&amp;from={$smarty.server.REQUEST_URI}" class="btn btn-small btn-warning" >Edit</a>
-						<a href="{$smarty.const.WWW_TOP}/admin/release-delete.php?id={$release.id}&amp;from={$smarty.server.HTTP_REFERER}" class=" btn btn-small btn-danger" >Delete</a>
-					</div>
-				</div>
-			{/if}
-			<dl class="dl-horizontal" style="margin-right:300px;">
+			<dl class="dl-horizontal" style="margin-right:200px;">
 				<dt>Name</dt>
 				<dd>{$release.name|escape:"htmlall"}</dd>
 				{if $show && $release.videos_id > 0}
@@ -75,7 +75,7 @@
 			</div>
 			{/if}
 			{if $movie && $release.videos_id == 0}
-				<dl class="dl" style="margin-right:300px;">
+				<dl class="dl">
 					<dt>Movie Info</dt>
 					<dd>{$movie.title|escape:"htmlall"}</dd>
 					<dt>Year</dt>
@@ -283,7 +283,7 @@
 						<dd>
 							<ol>
 								{assign var="tracksplits" value="|"|explode:$music.tracks}
-								{foreach $tracksplits as $tracksplit}
+								{foreach from=$tracksplits item=tracksplit}
 									<li>{$tracksplit|trim|escape:"htmlall"}</li>
 								{/foreach}
 							</ol>
@@ -296,10 +296,20 @@
 				<dd><a title="Browse {$release.group_name}" href="{$smarty.const.WWW_TOP}/browse?g={$release.group_name}">{$release.group_name|replace:"alt.binaries":"a.b"}</a></dd>
 
 				<dt>Category</dt>
-				<dd><a title="Browse by {$release.category_name}" href="{$smarty.const.WWW_TOP}/browse?t={$release.categories_id}">{$release.category_name}</a></dd>
-				{if $nfo.releases_id|@count > 0}
+				<dd><a title="Browse by {$release.category_name}" href="{$smarty.const.WWW_TOP}/browse?t={$result.categories_id}">{$release.category_name}</a></dd>
+				{if $nfo.id|@count > 0}
 					<dt>Nfo</dt>
 					<dd><a href="{$smarty.const.WWW_TOP}/nfo/{$release.guid}" title="View Nfo">View Nfo</a></dd>
+				{/if}
+
+				{if $predb && $userdata.canpre}
+					<dt>Pre:</th>
+					<dd>{$predb.ctime|date_format:"%b %e, %Y %T"} ({$predb.ctime|daysago})</dd>
+
+					{if $predb.nuketype != '' && $predb.nukereason != ''}
+						<dt>{$predb.nuketype|lower|capitalize}:</dt>
+						<dd>{$predb.nukereason}</dd>
+					{/if}
 				{/if}
 				{if $release.haspreview == 2 && $userdata.canpreview == 1}
 					<dt>Preview</dt>
@@ -325,7 +335,7 @@
 								<th class="mid">Size</th>
 								<th class="mid">Date</th>
 							</tr>
-							{foreach $releasefiles as $rf}
+							{foreach from=$releasefiles item=rf}
 								<tr>
 									<td>{$rf.name}</td>
 									<td class="mid">{if $rf.passworded != 1}No{else}Yes{/if}</td>
@@ -336,16 +346,11 @@
 						</table>
 					</dd>
 				{/if}
-				<dl>
-					<dt> Grabs</dt>
-					<dd>{$release.grabs}
-						time{if $release.grabs == 1}{else}s{/if}</dd>
-				</dl>
 				{if $failed != NULL && $failed >0}
 					<dl>
 						<dt> Failed Download</dt>
 						<dd>{$failed}
-							time{if $failed == 1}{else}s{/if}</dd>
+							time{if $failed==1}{else}s{/if}</dd>
 					</dl>
 				{/if}
 				{if $site->checkpasswordedrar > 0}
@@ -364,23 +369,16 @@
 
 				<dt style="margin-top:15px; margin-bottom:15px;">Download</dt>
 				<dd style="margin-top:15px; margin-bottom:15px;" id="{$release.guid}">
-					<a class="icon icon_nzb fa fa-cloud-download" style="text-decoration: none; color: #7ab800;" title="Download Nzb" href="{$smarty.const.WWW_TOP}/getnzb/{$release.guid}"></a>
-					<a id="guid{$release.guid}" class="icon icon_cartNZBinfo fa fa-shopping-basket" style="text-decoration: none; color: #5c5c5c;"  href="#" title="Send to my Download Basket"></a>
-					{if isset($sabintegrated) && $sabintegrated !=""}
-						<a id="guid{$release.guid}" class="icon icon_sabNZBinfo fa fa-share"  style="text-decoration: none; color: #008ab8;" href="#" title="Send to queue"></a>
+					<a class="icon icon_nzb fa fa-download" style="text-decoration: none; color: #7ab800;" title="Download Nzb" href="{$smarty.const.WWW_TOP}/getnzb/{$release.guid}"></a>
+					<a id="guid{$release.guid}" class="icon icon_cartNZBinfo fa fa-shopping-cart" style="text-decoration: none; color: #5c5c5c;"  href="#" title="Add to cart"></a>
+					{if $sabintegrated}
+						<a id="guid{$release.guid}" class="icon icon_sabNZBinfo fa fa-cloud-download"  style="text-decoration: none; color: #008ab8;" href="#" title="Send to queue"></a>
 					{/if}
-					{if !empty($release.imdbid)}
-						{if !empty($cpurl) && !empty($cpapi)}
-							<a
-								id="imdb{$release.imdbid}"
-								class="sendtocouch fa fa-bed"
-								style="text-decoration: none; color: #008ab8;"
-								href="javascript:;"
-								title="Add to CouchPotato"></a>
-						{/if}
+					{if isset($nzbgetintegrated)}
+						<a id="guid{$release.guid}" class="icon icon_nzb fa fa-download nzbgetNZBinfo" href="#" title="Send to my NZBGet"><img src="{$smarty.const.WWW_THEMES}/{$theme}/images/icons/nzbgetup.png"/></a>
 					{/if}
 					{if $weHasVortex}
-						<a class="icon icon_nzb fa fa-cloud-downloadvortex" href="#" title="Send to my NZBVortex"><img src="{$smarty.const.WWW_THEMES}/shared/images/icons/vortex/bigsmile.png"/></a>
+						<a class="icon icon_nzb fa fa-downloadvortex" href="#" title="Send to my NZBVortex"><img src="{$smarty.const.WWW_THEMES}/{$theme}/images/icons/vortex/bigsmile.png"/></a>
 					{/if}
 				</dd>
 
@@ -389,7 +387,7 @@
 					<a class="label" title="Search for similar Nzbs" href="{$smarty.const.WWW_TOP}/search/{$searchname|escape:"url"}">Search for similar</a>
 				</dd>
 
-				{if isset($isadmin)}
+				{if $isadmin}
 					<dt>Release Info</dt>
 					<dd>
 						Regex Id (<a href="{$smarty.const.WWW_TOP}/admin/regex-list.php?group={$release.group_name|escape:"url"}#{$release.regexid}">{$release.regexid}</a>)
@@ -401,9 +399,9 @@
 			</dl>
 		</div>
 		<div class="tab-pane" id="mediainfo">
-			{if $reVideo.releases_id|@count > 0 || $reAudio|@count > 0}
+			{if $reVideo.releaseid|@count > 0 || $reAudio|@count > 0}
 				<td style="padding:0;">
-					<table style="width:100%;" class="innerdata highlight table">
+					<table style="width:100%;" class="innerdata highlight table table-striped">
 						<tr>
 							<th width="15%"></th>
 							<th>Property</th>
@@ -472,7 +470,7 @@
 							<td class="right">{$reVideo.videolibrary}</td>
 						</tr>
 						{/if}
-						{foreach $reAudio as $audio}
+						{foreach from=$reAudio item=audio}
 						<tr>
 							<td><strong>Audio {$audio.audioid}</strong></td>
 							<td>Format</td>
@@ -558,7 +556,7 @@
 				<video width="75%" controls>
 					<source src="/covers/video/{$release.guid}.ogv" type="video/ogg">
 					Your browser does not support the video tag.
-				</video>
+				</video>			
 			{/if}
 		</div>
 		{if isset($xxx.backdrop) && $xxx.backdrop == 1}
@@ -579,7 +577,7 @@
 			<div class="comments">
 				{if $comments|@count > 0}
 
-					<table style="margin-bottom:20px;" class="data Sortable table">
+					<table style="margin-bottom:20px;" class="data Sortable table table-striped">
 						<tr class="{cycle values=",alt"}">
 							<th width="150" style="text-align:right;">User </th>
 							<th>Comment</th>

@@ -1,5 +1,5 @@
 <h2>Browse Games</h2>
-<div class="well well-sm">
+<div class="well well-small">
 	<div style="text-align: center;">
 		{include file='search-filter.tpl'}
 	</div>
@@ -7,7 +7,7 @@
 {$site->adbrowse}
 {if $results|@count > 0}
 	<form id="nzb_multi_operations_form" action="get">
-		<div class="well well-sm">
+		<div class="well well-small">
 			<div class="nzb_multi_operations">
 				<table width="100%">
 					<tr>
@@ -15,7 +15,7 @@
 							With Selected:
 							<div class="btn-group">
 								<input type="button" class="nzb_multi_operations_download btn btn-small btn-success" value="Download NZBs" />
-								<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Send to my Download Basket" />
+								<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Add to Cart" />
 								{if isset($sabintegrated) && $sabintegrated !=""}<input type="button" class="nzb_multi_operations_sab btn btn-small btn-primary" value="Send to queue" />{/if}
 							</div>
 							View: <strong>Covers</strong> | <a
@@ -28,7 +28,7 @@
 						</td>
 						<td width="20%">
 							<div class="pull-right">
-								{if isset($isadmin)}
+								{if $isadmin}
 									Admin:
 									<div class="btn-group">
 										<input type="button" class="nzb_multi_operations_edit btn btn-small btn-warning" value="Edit" />
@@ -42,7 +42,7 @@
 				</table>
 			</div>
 		</div>
-		<table style="width:100%;" class="data highlight icons table" id="coverstable">
+		<table style="width:100%;" class="data highlight icons table table-striped" id="coverstable">
 			<tr>
 				<th width="130">
 					<input type="checkbox" class="nzb_check_all" />
@@ -174,19 +174,19 @@
 									</div>
 								</li>
 								<li style="vertical-align:text-bottom;">
-									<a class="icon icon_nzb fa fa-cloud-download" style="text-decoration: none; color: #7ab800;" title="Download Nzb" href="{$smarty.const.WWW_TOP}/getnzb/{$mguid[$m@index]}" >
+									<a class="icon icon_nzb fa fa-download" style="text-decoration: none; color: #7ab800;" title="Download Nzb" href="{$smarty.const.WWW_TOP}/getnzb/{$mguid[$m@index]}" >
 									</a>
 								</li>
 								<li style="vertical-align:text-bottom;">
 									<div>
-										<a href="#" class="icon icon_cart fa fa-shopping-basket" style="text-decoration: none; style="text-decoration: none; color: #5c5c5c;" title="Send to my Download Basket">
+										<a href="#" class="icon icon_cart fa fa-shopping-cart" style="text-decoration: none; style="text-decoration: none; color: #5c5c5c;" title="Add to Cart">
 										</a>
 									</div>
 								</li>
 								<li style="vertical-align:text-bottom;">
 									{if isset($sabintegrated) && $sabintegrated !=""}
 										<div>
-											<a href="#" class="icon icon_sab fa fa-share" style="text-decoration: none; color: #008ab8;"  title="Send to my Queue">
+											<a href="#" class="icon icon_sab fa fa-cloud-download" style="text-decoration: none; color: #008ab8;"  title="Send to my Queue">
 											</a>
 										</div>
 									{/if}
@@ -194,13 +194,13 @@
 								<li style="vertical-align:text-bottom;">
 									{if $weHasVortex}
 										<div>
-											<a href="#" class="icon icon_nzb fa fa-cloud-downloadvortex" title="Send to my NZBVortex"><img src="{$smarty.const.WWW_THEMES}/shared/images/icons/vortex/bigsmile.png"></a>
+											<a href="#" class="icon icon_nzb fa fa-downloadvortex" title="Send to my NZBVortex"><img src="{$smarty.const.WWW_THEMES}/shared/images/icons/vortex/bigsmile.png"></a>
 										</div>
 									{/if}
 								</li>
-								{if isset($isadmin)}
-									<a class="rndbtn confirm_action btn btn-mini btn-danger pull-right" href="{$smarty.const.WWW_TOP}/admin/release-delete.php?id={$result.releases_id}&amp;from={$smarty.server.REQUEST_URI|escape:"url"}" title="Delete Release">Delete</a>
-									<a class="rndbtn btn btn-mini btn-warning pull-right" href="{$smarty.const.WWW_TOP}/admin/release-edit.php?id={$result.releases_id}&amp;from={$smarty.server.REQUEST_URI|escape:"url"}" title="Edit Release">Edit</a>
+								{if $isadmin}
+									<a class="rndbtn confirm_action btn btn-mini btn-danger pull-right" href="{$smarty.const.WWW_TOP}/admin/release-delete.php?id={$result.releaseid}&amp;from={$smarty.server.REQUEST_URI|escape:"url"}" title="Delete Release">Delete</a>
+									<a class="rndbtn btn btn-mini btn-warning pull-right" href="{$smarty.const.WWW_TOP}/admin/release-edit.php?id={$result.releaseid}&amp;from={$smarty.server.REQUEST_URI|escape:"url"}" title="Edit Release">Edit</a>
 								{/if}
 							</ul>
 							{if isset($result.genre) && $result.genre != ""}
@@ -248,7 +248,7 @@
 		<br/>
 		{$pager}
 		{if $results|@count > 10}
-			<div class="well well-sm">
+			<div class="well well-small">
 				<div class="nzb_multi_operations">
 					<table width="100%">
 						<tr>
@@ -256,7 +256,7 @@
 								With Selected:
 								<div class="btn-group">
 									<input type="button" class="nzb_multi_operations_download btn btn-small btn-success" value="Download NZBs" />
-									<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Send to my Download Basket" />
+									<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Add to Cart" />
 									{if isset($sabintegrated) && $sabintegrated !=""}<input type="button" class="nzb_multi_operations_sab btn btn-small btn-primary" value="Send to queue" />{/if}
 								</div>
 								View: <strong>Covers</strong> | <a
@@ -270,7 +270,7 @@
 							<td width="20%">
 								{if isset($section) && $section != ''}
 									<div class="pull-right">
-										{if isset($isadmin)}
+										{if $isadmin}
 											Admin:
 											<div class="btn-group">
 												<input type="button" class="nzb_multi_operations_edit btn btn-small btn-warning" value="Edit" />

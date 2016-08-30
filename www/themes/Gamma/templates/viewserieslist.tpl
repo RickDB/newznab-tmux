@@ -1,14 +1,5 @@
+<h2>{if $seriesletter != ''}Series starting with: {$seriesletter}{else}{$page->title}{/if}</h2>
 
-<h2>{$page->title}</h2>
-
-
-<p>
-<b>Jump to</b>:
-&nbsp;[ {if $seriesletter == '0-9'}<b><u>{/if}<a href="{$smarty.const.WWW_TOP}/series/0-9">0-9</a>{if $seriesletter == '0-9'}</u></b>{/if}
-{foreach $seriesrange as $range}
-{if $range == $seriesletter}<b><u>{/if}<a href="{$smarty.const.WWW_TOP}/series/{$range}">{$range}</a>{if $range == $seriesletter}</u></b>{/if}
-{/foreach}]
-</p>
 <form class="form pull-right" style="margin-top:-35px;">
 	<form name="showsearch" class="navbar-form" action="" method="get">
 		<div class="input-append">
@@ -17,21 +8,33 @@
 		</div>
 	</form>
 </form>
-<div style="text-align: center;">
+<center>
 <div class="btn-group" style="margin-top:-65px; margin-left:250px;">
 	<a class="btn btn-small" href="{$smarty.const.WWW_TOP}/myshows" title="List my watched shows">My Shows</a>
 	<a class="btn btn-small" href="{$smarty.const.WWW_TOP}/myshows/browse" title="browse your shows">Browse My Shows</a>
 </div>
+</center>
+
+<p>
+<b>Jump to</b>:
+<div class="pagination">
+	<ul>
+		<li><a href="{$smarty.const.WWW_TOP}/series/0-9">{if $seriesletter == '0-9'}<b><u>0-9</b></u>{else}0-9{/if}</a></li>
+	</ul>
+	{foreach $seriesrange as $range}
+		<ul>
+			<li><a href="{$smarty.const.WWW_TOP}/series/{$range}">{if $range == $seriesletter}<b><u>{$range}</b></u>{else}{$range}{/if}</a></li>
+		</ul>
+	{/foreach}
 </div>
+</p>
+
 {$site->adbrowse}
 
 {if $serieslist|@count > 0}
 
-<table style="width:100%;" class="data highlight icons table" id="browsetable">
+<table style="width:100%;" class="data highlight icons table table-striped" id="browsetable">
 	{foreach $serieslist as $sletter => $series}
-		<tr>
-			<td style="padding-top:15px;" colspan="10"><a href="#top" class="top_link">Top</a><h2>{$sletter}...</h2></td>
-		</tr>
 		<tr>
 			<th width="35%">Name</th>
 			<th>Network</th>
@@ -55,24 +58,23 @@
 					{/if}
 				</td>
 					<td class="mid">
-						<a title="View series" href="{$smarty.const.WWW_TOP}/series/{$s.id}">Series</a><br />
 						{if $s.id > 0}
 							{if $s.tvdb > 0}
-								<a title="View at TVDB" target="_blank" href="{$site->dereferrer_link}http://thetvdb.com/?tab=series&id={$s.tvdb}">TVDB</a>
+								<a class="btn btn-mini  btn-primary" title="View at TVDB" target="_blank" href="{$site->dereferrer_link}http://thetvdb.com/?tab=series&id={$s.tvdb}">TVDB</a>
 							{/if}
 							{if $s.tvmaze > 0}
-								<a title="View at TVMaze" target="_blank" href="{$site->dereferrer_link}http://tvmaze.com/shows/{$s.tvmaze}">TVMaze</a>
+								<a class="btn btn-mini  btn-info" title="View at TVMaze" target="_blank" href="{$site->dereferrer_link}http://tvmaze.com/shows/{$s.tvmaze}">TVMaze</a>
 							{/if}
 							{if $s.trakt > 0}
-								<a title="View at Trakt" target="_blank" href="{$site->dereferrer_link}http://www.trakt.tv/shows/{$s.trakt}">Trakt</a>
+								<a class="btn btn-mini  btn-info" title="View at Trakt" target="_blank" href="{$site->dereferrer_link}http://www.trakt.tv/shows/{$s.trakt}">Trakt</a>
 							{/if}
 							{if $s.tvrage > 0}
-								<a title="View at TVRage" target="_blank" href="{$site->dereferrer_link}http://www.tvrage.com/shows/id-{$s.tvrage}">TVRage</a>
+								<a class="btn btn-mini  btn-info" title="View at TVRage" target="_blank" href="{$site->dereferrer_link}http://www.tvrage.com/shows/id-{$s.tvrage}">TVRage</a>
 							{/if}
 							{if $s.tmdb > 0}
-								<a title="View at TheMovieDB" target="_blank" href="{$site->dereferrer_link}https://www.themoviedb.org/tv/{$s.tmdb}">TMDB</a>
+								<a class="btn btn-mini  btn-info" title="View at TheMovieDB" target="_blank" href="{$site->dereferrer_link}https://www.themoviedb.org/tv/{$s.tmdb}">TMDB</a>
 							{/if}
-							<a title="RSS Feed for {$s.title|escape:"htmlall"}" href="{$smarty.const.WWW_TOP}/rss?show={$s.id}&amp;dl=1&amp;i={$userdata.id}&amp;r={$userdata.rsstoken}"><i class="fa fa-rss"></i></a>
+							<a class="btn btn-mini" title="RSS Feed for {$s.title|escape:"htmlall"}" href="{$smarty.const.WWW_TOP}/rss?show={$s.id}&amp;dl=1&amp;i={$userdata.id}&amp;r={$userdata.rsstoken}"><i class="fa fa-rss"></i></a>
 						{/if}
 					</td>
 			</tr>

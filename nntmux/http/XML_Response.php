@@ -308,7 +308,14 @@ class XML_Response
 				$tag = 'RSS';
 		}
 
-		$this->xml->writeElement('title', $server['title']);
+		if(!empty($this->parameters['title']))
+		{
+			$this->xml->writeElement('title', $this->parameters['title']);
+		}
+		else
+		{
+			$this->xml->writeElement('title', $server['title']);
+		}
 		$this->xml->writeElement('description', $server['title'] . " {$tag} Details");
 		$this->xml->writeElement('link', $server['url']);
 		$this->xml->writeElement('language', 'en-gb');
@@ -362,9 +369,9 @@ class XML_Response
 		$this->xml->endElement();
 		$this->xml->writeElement(
 			'link',
-			"{$this->server['server']['url']}getnzb/{$this->release['guid']}.nzb" .
-			"&i={$this->parameters['uid']}" . "&r={$this->parameters['token']}" .
-			($this->parameters['del'] == '1' ? "&del=1" : '')
+				"{$this->server['server']['url']}getnzb/{$this->release['guid']}.nzb" .
+				"&i={$this->parameters['uid']}" . "&r={$this->parameters['token']}" .
+				($this->parameters['del'] == '1' ? "&del=1" : '')
 		);
 		$this->xml->writeElement('comments', "{$this->server['server']['url']}details/{$this->release['guid']}#comments");
 		$this->xml->writeElement('pubDate', date(DATE_RSS, strtotime($this->release['adddate'])));
@@ -501,8 +508,10 @@ class XML_Response
 		$r = $this->release;
 		$s = $this->server;
 		$p = $this->parameters;
-
+		
 		$this->cdata = "\n\t<div>\n";
+		$this->cdata .= "\t<a href=\"{$s['server']['url']}getnzb/{$r['guid']}.nzb&i={$p['uid']}&r={$p['token']}\"><img src=\"{$s['server']['url']}/themes/shared/images/fa-download-rss.png\"/></a></br></br>";
+
 		switch(1) {
 			case !empty($r['cover']):
 				$dir = 'movies';
@@ -520,13 +529,30 @@ class XML_Response
 				$dir = 'books';
 				$column = 'bookinfo_id';
 				break;
+			case ($r['haspreview']):
+				$dir = 'preview';
+				$column = 'guid';
+				break;
+
 		}
 		if (isset($dir) && isset($column)) {
 			$dcov = ($dir === 'movies' ? '-cover' : '');
-			$this->cdata .=
+			if ($dir = 'preview')
+			{
+				$dcov = '_thumb';
+				$this->cdata .=
+				"\t<img style=\"margin-left:10px;margin-bottom:10px;float:right;\" " .
+				"src=\"{$s['server']['url']}covers/{$dir}/{$r[$column]}{$dcov}.jpg\" " .
+			    "alt=\"{$r['searchname']}\" />\n";
+			}
+			else{
+				
+				$this->cdata .=
 				"\t<img style=\"margin-left:10px;margin-bottom:10px;float:right;\" " .
 				"src=\"{$s['server']['url']}covers/{$dir}/{$r[$column]}{$dcov}.jpg\" " .
 				"width=\"120\" alt=\"{$r['searchname']}\" />\n";
+			}
+
 		}
 		$size = Utility::bytesToSizeString($r['size']);
 		$this->cdata .=
@@ -561,13 +587,14 @@ class XML_Response
 				"<a href=\"{$s['server']['url']}api?t=nfo&id={$r['guid']}&raw=1&i={$p['uid']}&r={$p['token']}\">" .
 				"{$r['searchname']}.nfo</a></li>\n";
 		}
-
-		if ($r['parentid'] == Category::MOVIE_ROOT && $r['imdbid'] != '') {
-			$this->writeRssMovieInfo();
-		} else if ($r['parentid'] == Category::MUSIC_ROOT && $r['musicinfo_id'] > 0) {
-			$this->writeRssMusicInfo();
-		} else if ($r['parentid'] == Category::GAME_ROOT && $r['consoleinfo_id'] > 0) {
-			$this->writeRssConsoleInfo();
+		if (!empty($r['parentid'])) {		
+			if ($r['parentid'] == Category::MOVIE_ROOT && $r['imdbid'] != '') {
+				$this->writeRssMovieInfo();
+			} else if ($r['parentid'] == Category::MUSIC_ROOT && $r['musicinfo_id'] > 0) {
+				$this->writeRssMusicInfo();
+			} else if ($r['parentid'] == Category::GAME_ROOT && $r['consoleinfo_id'] > 0) {
+				$this->writeRssConsoleInfo();
+		}
 		}
 		$w->startElement('description');
 		$w->writeCdata($this->cdata . "\t</div>");

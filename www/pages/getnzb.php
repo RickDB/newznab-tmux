@@ -73,8 +73,8 @@ if (isset($_GET["zip"]) && $_GET["zip"] == "1") {
 	if (strlen($zip) > 0) {
 		$page->users->incrementGrabs($uid, count($guids));
 		foreach ($guids as $guid) {
-			$rel->updateGrab($guid);
-			$page->users->addDownloadRequest($uid, $guid);
+			//$rel->updateGrab($guid);
+			//$page->users->addDownloadRequest($uid, $guid);
 
 			if (isset($_GET["del"]) && $_GET["del"] == 1) {
 				$page->users->delCartByUserAndRelease($guid, $uid);
@@ -96,8 +96,8 @@ if (!file_exists($nzbPath)) {
 
 $relData = $rel->getByGuid($_GET["id"]);
 if ($relData) {
-	$rel->updateGrab($_GET["id"]);
-	$page->users->addDownloadRequest($uid, $relData['id']);
+	//$rel->updateGrab($_GET["id"]);
+	//$page->users->addDownloadRequest($uid, $relData['id']);
 	$page->users->incrementGrabs($uid);
 	if (isset($_GET["del"]) && $_GET["del"] == 1) {
 		$page->users->delCartByUserAndRelease($_GET["id"], $uid);

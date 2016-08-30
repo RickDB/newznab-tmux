@@ -1,11 +1,13 @@
 <?php
 
 use nntmux\Category;
+use nntmux\Releases;
 use nntmux\http\RSS;
 use nntmux\db\Settings;
 use nntmux\utility\Utility;
 
 $category = new Category(['Settings' => $page->settings]);
+$releases = new Releases(['Settings' => $page->settings]);
 $rss = new RSS(['Settings' => $page->settings]);
 
 // If no content id provided then show user the rss selection page.
@@ -99,15 +101,10 @@ if (!isset($_GET["t"]) && !isset($_GET["show"]) && !isset($_GET["anidb"])) {
 	$userNum = (isset($_GET["num"]) && is_numeric($_GET['num']) ? abs($_GET['num']) : 100);
 	$userAirDate = (isset($_GET["airdate"]) && is_numeric($_GET['airdate']) ? abs($_GET["airdate"]) : -1);
 
-	$params =
-		[
-			'dl'       => (isset($_GET['dl']) && $_GET['dl'] == '1' ? '1' : '0'),
-			'del'      => (isset($_GET['del']) && $_GET['del'] == '1' ? '1' : '0'),
-			'extended' => 1,
-			'uid'      => $uid,
-			'token'    => $rssToken
-		];
-
+	$userfilter = -1;
+	if (isset($_GET["uFilter"]) && !empty($_GET["uFilter"]))
+		$userfilter = ($_GET["uFilter"]);
+	
 	if ($userCat == -3) {
 		$relData = $rss->getShowsRss($userNum, $uid, $page->users->getCategoryExclusion($uid), $userAirDate);
 	} elseif ($userCat == -4) {
@@ -115,5 +112,33 @@ if (!isset($_GET["t"]) && !isset($_GET["show"]) && !isset($_GET["anidb"])) {
 	} else {
 		$relData = $rss->getRss(explode(',', $userCat), $userNum, $userShow, $userAnidb, $uid, $userAirDate);
 	}
+	
+	if($userfilter != -1)
+	{
+		$catexclusions = $page->users->getCategoryExclusion($uid);
+		$page->title = "Search results: ".$userfilter;
+
+		$categoryId = array();
+		$categoryId[] = -1;
+		if (isset($_REQUEST['t'])) {
+			$categoryId = explode(',', $_REQUEST['t']);
+		}
+
+	    //search($searchName,$usenetName,$posterName,$fileName,$groupName,$sizeFrom,$sizeTo,$hasNfo,$hasComments,$daysNew,$daysOld,$offset = 0,$limit = 1000,$orderBy = '',$maxAge = -1,$excludedCats = [],$type = 'basic',$cat = [-1]	);
+	    //search($searchName,$usenetName,$posterName,$fileName,$groupName,$sizeFrom,$sizeTo,$hasNfo,$hasComments,$daysNew,$daysOld,$offset = 0,$limit = 1000,$orderBy = '',$maxAge = -1,$excludedCats = [],$type = 'basic',$cat = [-1],$minSize = 0
+		// Min filesize 250MB (fromSize=2)
+		$relData = $releases->search($userfilter, -1, -1, -1, -1, 2, -1, 0, 0, -1, -1, 0, 250, 'posted_desc', -1, $catexclusions, "basic", $categoryId, 0);
+	}
+	
+	$params =
+	[
+		'dl'       => (isset($_GET['dl']) && $_GET['dl'] == '1' ? '1' : '0'),
+		'del'      => (isset($_GET['del']) && $_GET['del'] == '1' ? '1' : '0'),
+		'extended' => 1,
+		'uid'      => $uid,
+		'token'    => $rssToken,
+		'title'	   => $page->title
+	];
+	
 	$rss->output($relData, $params, $outputXML, 'rss');
 }

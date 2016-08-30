@@ -28,23 +28,12 @@
 	</div>
 </div>
 
-<div class="tvseriesheading">
-	{if $show.image != 0}
-	<div style="text-align: center;">
-		<img class="shadow img img-polaroid" style="max-height:300px;" alt="{$seriestitles} Logo" src="{$smarty.const.WWW_TOP}/covers/tvshows/{$show.id}.jpg" />
-	</div>
-	<br/>
-	{/if}
-	<p>
-		<span class="descinitial">{$seriessummary|escape:"htmlall"|nl2br|magicurl}</span>
-	</p>
-
-</div>
-
-<div style="text-align: center;">
-	<div class="btn-group">
+<div id="moviefull" style="min-height:340px;">
+		{if $show.image != 0}<img class="shadow pic img-polaroid pull-right" width="200px" alt="{$seriestitles} Logo" src="{$smarty.const.WWW_TOP}/covers/tvshows/{$show.id}.jpg"/>{/if}
+		</br><p  style="margin-right:300px;">"{$seriessummary|escape:"htmlall"|nl2br|magicurl}"</p>
+			<div class="btn-group">
 		{if $show.tvdb > 0}
-			<a class="btn btn-small btn-primarybtn-info" target="_blank"
+			<a class="btn btn-small btn-primary" target="_blank"
 			   href="{$site->dereferrer_link}http://thetvdb.com/?tab=series&id={$show.tvdb}"
 			   title="View at TheTVDB">TheTVDB</a>
 		{/if}
@@ -68,19 +57,21 @@
 			   href="{$site->dereferrer_link}https://www.themoviedb.org/tv/{$show.tmdb}"
 			   title="View at TheMovieDB">TMDB</a>
 		{/if}
+		<a class="btn btn-small" title="RSS Feed for {$s.seriestitles}" href="{$smarty.const.WWW_TOP}/rss?show={$show.id}&amp;dl=1&amp;i={$userdata.id}&amp;r={$userdata.rsstoken}"><i class="fa fa-rss"></i></a>
 	</div>
 </div>
 
 <br/>
 
 <form id="nzb_multi_operations_form" action="get">
-	<div class="well well-sm">
+	<div class="well well-small">
 		<div class="nzb_multi_operations">
 			With Selected:
 			<div class="btn-group">
 				<input type="button" class="nzb_multi_operations_download btn btn-small btn-success" value="Download NZBs" />
-				<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Send to my Download Basket" />
-				{if isset($sabintegrated) && $sabintegrated !=""}<input type="button" class="nzb_multi_operations_sab btn btn-small btn-primary" value="Send to queue" />{/if}
+				<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Add to cart" />
+				{if $sabintegrated}<input type="button" class="nzb_multi_operations_sab btn btn-small btn-primary" value="Send to queue" />{/if}
+				{if isset($nzbgetintegrated)}<input type="button" class="nzb_multi_operations_nzbget btn btn-small btn-primary" value="Send to NZBGet" />{/if}
 			</div>
 
 		    <div class="btn-group pull-right">
@@ -97,7 +88,7 @@
 				<button data-quality="2160p" class="btn">2160p</button>
 		    </div>
 
-			{if isset($isadmin)}
+			{if $isadmin}
 			<div class="pull-right">
 				Admin:
 				<div class="btn-group">
@@ -159,7 +150,7 @@
 		<div class="tab-content">
 			{foreach $seasons as $seasonnum => $season name=tv}
 			<div class="tab-pane{if $smarty.foreach.tv.first} active{/if}" id="{$seasonnum}">
-				<table class="tb_{$seasonnum} data highlight icons table" id="browsetable">
+				<table class="tb_{$seasonnum} data highlight icons table table-striped" id="browsetable">
 					<tr class="dont-filter">
 						<th>Ep</th>
 						<th>Name</th>
@@ -182,7 +173,7 @@
 					<tr class="{cycle values=",alt"} filter" id="guid{$result.guid}" data-name="{$result.searchname|escape:"htmlall"|lower|replace:".":" "}">
 						<td width="20" class="static"></td>
 						<td>
-							<a title="View details" href="{$smarty.const.WWW_TOP}/details/{$result.guid}"><h5>{$result.searchname|escape:"htmlall"|replace:".":" "}</h5></a>
+							<a title="View details" href="{$smarty.const.WWW_TOP}/details/{$result.guid}/{$result.searchname|escape:"seourl"}"><h5>{$result.searchname|escape:"htmlall"|replace:".":" "}</h5></a>
 
 							<div class="resextra">
 								<div class="btns">
@@ -223,21 +214,27 @@
 						<td class="icons" style='width:100px;'>
 							<ul class="inline">
 								<li>
-									<a class="icon icon_nzb fa fa-cloud-download" style="text-decoration: none; color: #7ab800;" title="Download Nzb" href="{$smarty.const.WWW_TOP}/getnzb/{$result.guid}"></a>
+									<a class="icon icon_nzb fa fa-download" style="text-decoration: none; color: #7ab800;" title="Download Nzb" href="{$smarty.const.WWW_TOP}/getnzb/{$result.guid}"></a>
 								<li>
-									<a href="#" class="icon icon_cart fa fa-shopping-basket" style="text-decoration: none; color: #5c5c5c;" title="Send to my Download Basket">
+									<a href="#" class="icon icon_cart fa fa-shopping-cart" style="text-decoration: none; color: #5c5c5c;" title="Add to cart">
 									</a>
 								</li>
-								{if isset($sabintegrated) && $sabintegrated !=""}
+								{if $sabintegrated}
 								<li>
-									<a class="icon icon_sab fa fa-share" style="text-decoration: none; color: #008ab8;"  href="#" title="Send to queue">
+									<a class="icon icon_sab fa fa-cloud-download" style="text-decoration: none; color: #008ab8;"  href="#" title="Send to queue">
+									</a>
+								</li>
+								{/if}
+								{if isset($nzbgetintegrated)}
+								<li>
+									<a class="icon icon_nzb fa fa-downloadget" href="#" title="Send to NZBGet">
 									</a>
 								</li>
 								{/if}
                                 {if $weHasVortex}
                                     <li>
-                                        <a class="icon icon_nzb fa fa-cloud-downloadvortex" href="#" title="Send to NZBVortex">
-                                            <img class="icon icon_nzb fa fa-cloud-downloadvortex" alt="Send to my NZBVortex" src="{$smarty.const.WWW_THEMES}/shared/images/icons/vortex/bigsmile.png">
+                                        <a class="icon icon_nzb fa fa-downloadvortex" href="#" title="Send to NZBVortex">
+                                            <img class="icon icon_nzb fa fa-downloadvortex" alt="Send to my NZBVortex" src="{$smarty.const.WWW_THEMES}/{$theme}/images/icons/vortex/bigsmile.png">
                                         </a>
                                     </li>
                                 {/if}

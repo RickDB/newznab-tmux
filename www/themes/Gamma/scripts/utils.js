@@ -1,3 +1,21 @@
+$("td").live("click", function(e) {
+    var chk = $(this).closest("tr").find("input:checkbox").get(0);
+	
+	//Checked state
+    if(chk.checked = chk.checked)
+    {
+		$(this).closest("tr").css("background-color", this ? "#40393C" : "");
+		chk.checked = chk.checked;
+	}
+	//Unchecked state
+	else
+	{
+		$(this).closest("tr").css("background-color", this ? "#000000" : "");
+		chk.checked = chk.unchecked;
+	}
+	
+});
+
 // event bindings
 jQuery(function($){
 
@@ -69,10 +87,10 @@ jQuery(function($){
         $.post( SERVERROOT + "cart?add=" + guid, function(resp){
             $(e.target).addClass('icon_cart_clicked').attr('title',' Release added to Cart');
             $.pnotify({
-                title: 'ADDED TO YOUR DOWNLOAD BASKET!',
-                text: 'Its now in your Download Basket',
+                title: 'ADDED TO CART!',
+                text: 'Its now in your cart',
                 type: 'warning',
-                icon: 'fa fa-info-sign'
+                icon: 'fa-icon-info-sign'
             });        });
         return false;
     });
@@ -84,29 +102,12 @@ jQuery(function($){
         $.post( SERVERROOT + "cart?add=" + guid, function(resp){
             $(e.target).addClass('icon_cart_clicked').attr('title',' Release added to Cart');
             $.pnotify({
-                title: 'ADDED TO YOUR DOWNLOAD BASKET!',
-                text: 'Its now in your Download Basket',
+                title: 'ADDED TO CART!',
+                text: 'Its now in your cart',
                 type: 'warning',
-                icon: 'fa fa-info-sign'
+                icon: 'fa-icon-info-sign'
             });        });
         return false;
-    });
-
-    $('.sendtocouch').click(function (e) {
-        if ($(this).hasClass('icon_cp_clicked')) return false;
-        var guid = $(this).parent().parent().parent().parent().attr('id').substring(4);
-        var cpurl = SERVERROOT + "sendtocouch/" + guid;
-
-        $.post(cpurl, function(resp){
-            $(e.target).addClass('icon_cp_clicked').attr('title','Added to CouchPotato');
-        $.pnotify({
-            title: 'ADDED TO COUCHPOTATO!',
-            text: 'Its now on your wanted list! ^_^',
-            type: 'info',
-            animate_speed: 'fast',
-            icon: 'fa fa-info-sign'
-            });
-        });
     });
 
     $('.icon_nzbvortex').click(function(event)
@@ -242,7 +243,7 @@ jQuery(function($){
                 title: 'ADDED TO QUEUE!',
                 text: 'Its now in the Queue',
                 type: 'info',
-                icon: 'fa fa-info-sign'
+                icon: 'fa-icon-info-sign'
             });
         });
         return false;
@@ -261,7 +262,7 @@ jQuery(function($){
                 title: 'ADDED TO NZBGET!',
                 text: 'Its now in the Queue',
                 type: 'info',
-                icon: 'fa fa-info-sign'
+                icon: 'fa-icon-info-sign'
             });
         });
         return false;
@@ -280,7 +281,7 @@ jQuery(function($){
                 title: 'ADDED TO NZBGET!',
                 text: 'Its now in the Queue',
                 type: 'info',
-                icon: 'fa fa-info-sign'
+                icon: 'fa-icon-info-sign'
             });
         });
         return false;
@@ -405,10 +406,10 @@ jQuery(function($){
                 guids.push(guid);
                 //cart_notify() // consider doing this only upon success and maybe placing it outside of the loop
                 $.pnotify({
-                    title: 'ADDED TO YOUR DOWNLOAD BASKET!',
-                    text: 'Its now in your Download Basket',
+                    title: 'ADDED TO YOUR CART!',
+                    text: 'Its now in your cart',
                     type: 'warning',
-                    icon: 'fa fa-info-sign'
+                    icon: 'fa-icon-info-sign'
                 });
             }
             $(this).attr('checked', false);
@@ -430,7 +431,7 @@ jQuery(function($){
                         title: 'ADDED TO QUEUE!',
                         text: 'Its now in the queue!! ^_^',
                         type: 'info',
-                        icon: 'fa fa-info-sign'
+                        icon: 'fa-icon-info-sign'
                     });
                 });
             }
@@ -450,7 +451,7 @@ jQuery(function($){
                         title: 'ADDED TO QUEUE!',
                         text: 'Its now in the queue!! ^_^',
                         type: 'info',
-                        icon: 'fa fa-info-sign'
+                        icon: 'fa-icon-info-sign'
                     });
                 });
             }

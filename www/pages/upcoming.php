@@ -17,6 +17,8 @@ $cpurl = $user['cp_url'];
 $page->smarty->assign('cpapi', $cpapi);
 $page->smarty->assign('cpurl', $cpurl);
 
+$m->updateUpcoming();
+
 $data = $m->getUpcoming($_GET["id"]);
 //print_r(json_decode($data["info"])->movies);die();
 if (!$data || $data["info"] == "") {

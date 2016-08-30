@@ -1,6 +1,6 @@
 <h2>Browse Books</h2>
 
-<div class="well well-sm">
+<div class="well well-small">
 <div style="text-align: center;">
 	{include file='search-filter.tpl'}
 </div>
@@ -12,7 +12,7 @@
 
 <form id="nzb_multi_operations_form" action="get">
 
-	<div class="well well-sm">
+	<div class="well well-small">
 		<div class="nzb_multi_operations">
 			<table width="100%">
 				<tr>
@@ -20,7 +20,7 @@
 						With Selected:
 						<div class="btn-group">
 							<input type="button" class="nzb_multi_operations_download btn btn-small btn-success" value="Download NZBs" />
-							<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Send to my Download Basket" />
+							<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Add to Cart" />
 							{if isset($sabintegrated) && $sabintegrated !=""}<input type="button" class="nzb_multi_operations_sab btn btn-small btn-primary" value="Send to queue" />{/if}
 						</div>
 						View: <strong>Covers</strong> | <a
@@ -34,7 +34,7 @@
 					<td width="20%">
 						{if isset($section) && $section != ''}
 							<div class="pull-right">
-							{if isset($isadmin)}
+							{if $isadmin}
 								Admin:
 								<div class="btn-group">
 									<input type="button" class="nzb_multi_operations_edit btn btn-small btn-warning" value="Edit" />
@@ -52,7 +52,7 @@
 
 
 
-<table style="width:100%;" class="data highlight icons table" id="coverstable">
+<table style="width:100%;" class="data highlight icons table table-striped" id="coverstable">
 	<tr>
 		<th width="130"><input type="checkbox" class="nzb_check_all" /></th>
 		<th>author<br/>
@@ -138,7 +138,7 @@
 								<div class="icon"><input type="checkbox" class="nzb_check" value="{$mguid[$m@index]}" /></div>
 							</td>
 							<td>
-								<a href="{$smarty.const.WWW_TOP}/details/{$mguid[$m@index]}">{$mname[$m@index]|escape:"htmlall"}</a><br/>
+								<a href="{$smarty.const.WWW_TOP}/details/{$mguid[$m@index]}/{$mname[$m@index]|escape:"seourl"}">{$mname[$m@index]|escape:"htmlall"}</a><br/>
 								<ul class="inline">
 									<li width="50px"><b>Info:</b></li>
 									<li width="100px">Posted {$mpostdate[$m@index]|timeago}</li>
@@ -166,20 +166,20 @@
 							<td class="icons" style='width:100px;'>
 								<ul class="inline">
 									<li>
-										<a class="icon icon_nzb fa fa-cloud-download" style="text-decoration: none; color: #7ab800;" title="Download Nzb" href="{$smarty.const.WWW_TOP}/getnzb/{$mguid[$m@index]}"></a>
+										<a class="icon icon_nzb fa fa-download" style="text-decoration: none; color: #7ab800;" title="Download Nzb" href="{$smarty.const.WWW_TOP}/getnzb/{$mguid[$m@index]}"></a>
 									</li>
 									<li>
-										<a href="#" class="icon icon_cart fa fa-shopping-basket" style="text-decoration: none; color: #5c5c5c;" title="Send to my Download Basket">
+										<a href="#" class="icon icon_cart fa fa-shopping-cart" style="text-decoration: none; color: #5c5c5c;" title="Add to Cart">
 										</a>
 									</li>
 									{if isset($sabintegrated) && $sabintegrated !=""}
 									<li>
-										<a class="icon icon_sab fa fa-share" style="text-decoration: none; color: #008ab8;"  href="#" title="Send to queue"></a>
+										<a class="icon icon_sab fa fa-cloud-download" style="text-decoration: none; color: #008ab8;"  href="#" title="Send to queue"></a>
 									</li>
 									{/if}
                                     {if isset($weHasVortex) && $weHasVortex !=""}
                                         <li>
-                                            <a class="icon icon_nzb fa fa-cloud-downloadvortex" href="#" title="Send to NZBVortex">
+                                            <a class="icon icon_nzb fa fa-downloadvortex" href="#" title="Send to NZBVortex">
                                                 <img src="{$smarty.const.WWW_THEMES}/shared/images/icons/vortex/bigsmile.png">
                                             </a>
                                         </li>
@@ -200,7 +200,7 @@
 </table>
 
 {if $results|@count > 10}
-<div class="well well-sm">
+<div class="well well-small">
 	<div class="nzb_multi_operations">
 		<table width="100%">
 			<tr>
@@ -208,7 +208,7 @@
 					With Selected:
 					<div class="btn-group">
 						<input type="button" class="nzb_multi_operations_download btn btn-small btn-success" value="Download NZBs" />
-						<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Send to my Download Basket" />
+						<input type="button" class="nzb_multi_operations_cart btn btn-small btn-info" value="Add to Cart" />
 						{if isset($sabintegrated) && $sabintegrated !=""}<input type="button" class="nzb_multi_operations_sab btn btn-small btn-primary" value="Send to queue" />{/if}
 					</div>
 					View: <strong>Covers</strong> | <a
@@ -222,7 +222,7 @@
 				<td width="20%">
 					{if isset($section) && $section != ''}
 						<div class="pull-right">
-						{if isset($isadmin)}
+						{if $isadmin}
 							Admin:
 							<div class="btn-group">
 								<input type="button" class="nzb_multi_operations_edit btn btn-small btn-warning" value="Edit" />

@@ -18,21 +18,12 @@
 						<div style="text-align: center;">
 						<a class="rndbtn badge badge-success" target="_blank" href="{$site->dereferrer_link}{$result->links->alternate}" title="View Rotten Tomatoes Details">Rotten</a>
 						<a class="rndbtn badge badge-imdb" target="_blank" href="{$site->dereferrer_link}http://www.imdb.com/title/tt{$result->alternate_ids->imdb}" title="View Imdb Details">Imdb</a>
-							{if !empty($cpurl) && !empty($cpapi)}
-								<a
-									id="imdb{$result->alternate_ids->imdb}"
-									href="javascript:;"
-									class="sendtocouch"
-									title="Add to CouchPotato">
-									<img src="{$smarty.const.WWW_TOP}/themes/shared/img/icons/couch.png">
-								</a>
-							{/if}
 						</div>
 					</div>
 				</div>
 			</td>
 			<td colspan="3" class="left">
-				<h4><a href="{$smarty.const.WWW_TOP}/movies?title={$result->title}&year={$result->year}">{$result->title|escape:"htmlall"}</a> (<a class="title" title="{$result->year}" href="{$smarty.const.WWW_TOP}/movies?year={$result->year}">{$result->year}</a>) {if $result->ratings->critics_score > 0}{$result->ratings->critics_score}/100{/if}</h4>
+				<h4><a href="{$smarty.const.WWW_TOP}/movies?imdb={$result->alternate_ids->imdb}">{$result->title|escape:"htmlall"}</a> (<a class="title" title="{$result->year}" href="{$smarty.const.WWW_TOP}/movies?year={$result->year}">{$result->year}</a>) {if $result->ratings->critics_score > 0}{$result->ratings->critics_score}/100{/if}</h4>
 				{if $result->synopsis == ""}No synopsis. Check <a target="_blank" href="{$site->dereferrer_link}{$result->links->alternate}" title="View Rotten Tomatoes Details">Rotten Tomatoes</a> for more information.{else}{$result->synopsis}{/if}
 				{if $result->abridged_cast|@count > 0}
 					<br /><br />
@@ -50,5 +41,5 @@
 		{/foreach}
 </table>
 {else}
-<h2>No results</h2>
+<h2>No results - Rotten Tomatoes API limit reached probably</h2>
 {/if}
